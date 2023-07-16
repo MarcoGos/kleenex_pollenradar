@@ -1,0 +1,19 @@
+{
+  "domain": "kleenex_pollenradar",
+  "name": "Kleenex pollenradar",
+  "version": "0.0.1",
+  "config_flow": true,
+  "documentation": "https://github.com/MarcoGos/kleenex_pollenradar",
+  "requirements": [
+    "beautifulsoup4==4.10.0"
+  ],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": [
+    "@MarcoGos"
+  ],
+  "iot_class": "cloud_polling",
+  "integration_type": "hub"
+}
