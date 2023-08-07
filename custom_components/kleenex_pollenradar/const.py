@@ -31,6 +31,6 @@ REGIONS = {
     "it": {
         "name": "Italy",
         "url": "https://www.it.scottex.com/api/sitecore/Pollen/GetPollenContent",
-     }   
+    }   
 }
 CONF_REGION = "region"
