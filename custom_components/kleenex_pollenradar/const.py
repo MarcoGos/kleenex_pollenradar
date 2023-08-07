@@ -27,6 +27,10 @@ REGIONS = {
     "us": {
         "name": "United States of America",
         "url": "https://www.kleenex.com/api/sitecore/Pollen/GetPollenContent",
-    }
+    },
+    "it": {
+        "name": "Italy",
+        "url": "https://www.it.scottex.com/api/sitecore/Pollen/GetPollenContent",
+     }   
 }
 CONF_REGION = "region"
