@@ -1,0 +1,22 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "E' già configurato"
+        },
+        "error": {
+            "cannot_connect": "non riesco a connettermi",
+            "invalid_auth": "Sembra che la vostra posizione non sia nella regione scelta",
+            "unknown": "Errore sconosciuto"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "region": "Regione",
+                    "latitude": "Latitudine",
+                    "longitude": "Longitudine",
+                    "name": "Nome"
+                }
+            }
+        }
+    }
+}
