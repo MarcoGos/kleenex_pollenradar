@@ -12,6 +12,14 @@ PLATFORMS = [SENSOR]
 DEFAULT_SYNC_INTERVAL = 3600  # seconds
 
 REGIONS = {
+    "fr": {
+        "name": "France",
+        "url": "https://www.kleenex.fr/api/sitecore/Pollen/GetPollenContent",
+    },
+    "it": {
+        "name": "Italy",
+        "url": "https://www.it.scottex.com/api/sitecore/Pollen/GetPollenContent",
+    },
     "nl": {
         "name": "Netherlands",
         "url": "https://www.kleenex.nl/api/sitecore/Pollen/GetPollenContent",
@@ -20,17 +28,9 @@ REGIONS = {
         "name": "United Kingdom",
         "url": "https://www.kleenex.co.uk/api/sitecore/Pollen/GetPollenContent",
     },
-    "fr": {
-        "name": "France",
-        "url": "https://www.kleenex.fr/api/sitecore/Pollen/GetPollenContent",
-    },
     "us": {
         "name": "United States of America",
         "url": "https://www.kleenex.com/api/sitecore/Pollen/GetPollenContent",
-    },
-    "it": {
-        "name": "Italy",
-        "url": "https://www.it.scottex.com/api/sitecore/Pollen/GetPollenContent",
-    }   
+    }
 }
 CONF_REGION = "region"
