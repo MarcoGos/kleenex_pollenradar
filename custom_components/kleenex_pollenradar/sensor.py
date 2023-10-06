@@ -8,6 +8,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.device_registry import DeviceEntryType
 
 from .coordinator import PollenDataUpdateCoordinator
 from .const import DOMAIN, NAME, MODEL, MANUFACTURER
@@ -107,6 +108,7 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator]):
     @property
     def device_info(self) -> dict[str, Any]:
         return {
+            "entry_type": DeviceEntryType.SERVICE,
             "identifiers": {(DOMAIN, self.coordinator.api.position)},
             "name": f"{NAME} ({self._entry.data['name']})",
             "model": MODEL,

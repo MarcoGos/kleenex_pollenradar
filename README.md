@@ -1,8 +1,8 @@
 ![Version](https://img.shields.io/github/v/release/MarcoGos/kleenex_pollenradar?include_prereleases)
 
-# Kleenex pollenradar / Scottex
+# Kleenex pollen radar / Scottex
 
-This is a custom integration of the Kleenex pollenradar/Scottex. It will provide information about pollen counts and levels for trees, grass and weeds. Information will only be available for positions in the Netherlands, United Kingdom, France, Italy and United States of America.
+This is a custom integration of the Kleenex pollen radar/Scottex. It will provide information about pollen counts and levels for trees, grass and weeds. Information will only be available for positions in the Netherlands, United Kingdom, France, Italy and United States of America.
 
 ## Installation
 
@@ -29,7 +29,7 @@ The following sensors will be registered:
 
 Each sensor has additional attributes for the forecast for the upcoming 4 days.
 
-The sensor information is updated every hour although the values on the Kleenex pollenradar website are usually updated every 3 hours.
+The sensor information is updated every hour although the values on the Kleenex pollen radar website are usually updated every 3 hours.
 
 ![Sensors](/assets/sensors.png)
 
