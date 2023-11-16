@@ -1,7 +1,7 @@
 {
   "domain": "kleenex_pollenradar",
-  "name": "Kleenex pollen radar",
-  "version": "0.0.4",
+  "name": "Kleenex Pollen Radar",
+  "version": "0.0.5",
   "config_flow": true,
   "documentation": "https://github.com/MarcoGos/kleenex_pollenradar",
   "requirements": [

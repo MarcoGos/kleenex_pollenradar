@@ -1,6 +1,6 @@
 """Constants for the Kleenex pollen radar integration."""
 
-NAME = "Kleenex pollen radar"
+NAME = "Kleenex Pollen Radar"
 DOMAIN = "kleenex_pollenradar"
 MANUFACTURER = "Kleenex / Scottex"
 MODEL = "Pollen radar"

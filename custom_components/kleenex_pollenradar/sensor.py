@@ -9,6 +9,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.device_registry import DeviceEntryType
+from homeassistant.components.sensor import SensorDeviceClass
 
 from .coordinator import PollenDataUpdateCoordinator
 from .const import DOMAIN, NAME, MODEL, MANUFACTURER
@@ -30,7 +31,7 @@ async def async_setup_entry(
             "Last Updated (Pollen)",
             "",
             "mdi:clock-outline",
-            None,
+            SensorDeviceClass.TIMESTAMP,
             EntityCategory.DIAGNOSTIC,
         ),
     ]
