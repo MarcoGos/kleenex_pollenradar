@@ -1,0 +1,12 @@
+{
+    "python.analysis.diagnosticSeverityOverrides": {
+      "reportMissingTypeStubs": "none",
+      "reportMissingTypeArgument": "none",
+      "reportUnknownMemberType": "none"
+    },
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "black"
+  }
+  

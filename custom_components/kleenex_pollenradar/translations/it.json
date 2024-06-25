@@ -1,22 +1,54 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "E' già configurato"
-        },
-        "error": {
-            "cannot_connect": "non riesco a connettermi",
-            "invalid_auth": "Sembra che la vostra posizione non sia nella regione scelta",
-            "unknown": "Errore sconosciuto"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "region": "Regione",
-                    "latitude": "Latitudine",
-                    "longitude": "Longitudine",
-                    "name": "Nome"
-                }
-            }
+  "config": {
+    "abort": {
+      "already_configured": "E' già configurato"
+    },
+    "error": {
+      "cannot_connect": "non riesco a connettermi",
+      "invalid_auth": "Sembra che la vostra posizione non sia nella regione scelta",
+      "unknown": "Errore sconosciuto"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "region": "Regione",
+          "latitude": "Latitudine",
+          "longitude": "Longitudine",
+          "name": "Nome"
         }
+      }
     }
+  },
+  "entity": {
+    "sensor": {
+      "trees": {
+        "name": "Alberi"
+      },
+      "grass": {
+        "name": "Graminacee"
+      },
+      "weeds": {
+        "name": "Erba"
+      },
+      "region": {
+        "name": "Regione",
+        "state": {
+          "fr": "Francia",
+          "it": "Italia",
+          "nl": "Paesi Bassi",
+          "uk": "Gran Bretagna",
+          "us": "Stati Uniti"
+        }
+      },
+      "latitude": {
+        "name": "Latitudine"
+      },
+      "longitude": {
+        "name": "Longitudine"
+      },
+      "last_updated": {
+        "name": "Ultimo aggiornamento"
+      }
+    }
+  }
 }

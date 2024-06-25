@@ -3,18 +3,26 @@ from __future__ import annotations
 
 from typing import Any
 
-from .api import PollenApi
-from .const import DOMAIN, PLATFORMS, CONF_REGION
-
 import logging
-from homeassistant.config_entries import ConfigEntry, ConfigType
-
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.core import Config
+from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.const import CONF_LATITUDE, CONF_LONGITUDE
+from homeassistant.helpers.device_registry import DeviceEntryType
+from homeassistant.const import (
+    CONF_LATITUDE,
+    CONF_LONGITUDE
+)
 
+from .api import PollenApi
+from .const import (
+    DOMAIN,
+    NAME,
+    PLATFORMS,
+    CONF_REGION,
+    MODEL,
+    MANUFACTURER
+)
 from .coordinator import PollenDataUpdateCoordinator
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
@@ -29,34 +37,36 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if hass.data.get(DOMAIN) is None:
         hass.data.setdefault(DOMAIN, {})
 
+    region = entry.data[CONF_REGION]
+    latitude = entry.data[CONF_LATITUDE]
+    longitude = entry.data[CONF_LONGITUDE]
+
     _LOGGER.debug(f"entry.data: {entry.data}")
 
     session = async_get_clientsession(hass)
     api = PollenApi(
         session=session,
-        region=entry.data[CONF_REGION],
-        latitude=entry.data[CONF_LATITUDE],
-        longitude=entry.data[CONF_LONGITUDE],
+        region=region,
+        latitude=latitude,
+        longitude=longitude,
     )
 
-    coordinator = PollenDataUpdateCoordinator(hass, api=api)
-    _LOGGER.debug("Trying to perform async_refresh")
-    await coordinator.async_refresh()
+    device_info = DeviceInfo(
+        entry_type=DeviceEntryType.SERVICE,
+        identifiers={(DOMAIN, f"{latitude}x{longitude}")},
+        name=f"{NAME} ({entry.data['name']})",
+        model=MODEL,
+        manufacturer=MANUFACTURER,
+    )
 
-    if not coordinator.last_update_success:
-        raise ConfigEntryNotReady
+    hass.data[DOMAIN][entry.entry_id] = coordinator = PollenDataUpdateCoordinator(
+        hass, api=api, device_info=device_info)
 
-    _LOGGER.debug(f"Info about entry: {entry.entry_id}")
-
-    hass.data[DOMAIN][entry.entry_id] = coordinator
-
-    for platform in PLATFORMS:
-        _LOGGER.debug(f"Adding platform: {platform}")
-        coordinator.platforms.append(platform)
+    await coordinator.async_config_entry_first_refresh()
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    entry.async_on_unload(entry.add_update_listener(async_reload_entry))
 
-    entry.add_update_listener(async_reload_entry)
     return True
 
 

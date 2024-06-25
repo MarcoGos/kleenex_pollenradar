@@ -1,22 +1,54 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Device is already configured"
-        },
-        "error": {
-            "cannot_connect": "Failed to connect",
-            "invalid_auth": "Looks like you position isn't within the choosen region",
-            "unknown": "Unexpected error"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "region": "Region",
-                    "latitude": "Latitude",
-                    "longitude": "Longitude",
-                    "name": "Name"
-                }
-            }
+  "config": {
+    "abort": {
+      "already_configured": "Device is already configured"
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Looks like you position isn't within the choosen region",
+      "unknown": "Unexpected error"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "region": "Region",
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "name": "Name"
         }
+      }
     }
+  },
+  "entity": {
+    "sensor": {
+      "trees": {
+        "name": "Trees"
+      },
+      "grass": {
+        "name": "Grass"
+      },
+      "weeds": {
+        "name": "Weeds"
+      },
+      "region": {
+        "name": "Region",
+        "state": {
+          "fr": "France",
+          "it": "Italy",
+          "nl": "Netherlands",
+          "uk": "Great Britain",
+          "us": "United States of America"
+        }
+      },
+      "latitude": {
+        "name": "Latitude"
+      },
+      "longitude": {
+        "name": "Longitude"
+      },
+      "last_updated": {
+        "name": "Last updated"
+      }
+    }
+  }
 }

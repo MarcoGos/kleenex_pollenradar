@@ -1,22 +1,54 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "L'appareil est déjà configuré"
-        },
-        "error": {
-            "cannot_connect": "Échec de la connexionFailed to connect",
-            "invalid_auth": "On dirait que votre position n'est pas dans la région choisie",
-            "unknown": "Erreur inattendue"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "region": "Région",
-                    "latitude": "Latitude",
-                    "longitude": "Longitude",
-                    "name": "Nom"
-                }
-            }
+  "config": {
+    "abort": {
+      "already_configured": "L'appareil est déjà configuré"
+    },
+    "error": {
+      "cannot_connect": "Échec de la connexionFailed to connect",
+      "invalid_auth": "On dirait que votre position n'est pas dans la région choisie",
+      "unknown": "Erreur inattendue"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "region": "Région",
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "name": "Nom"
         }
+      }
     }
+  },
+  "entity": {
+    "sensor": {
+      "trees": {
+        "name": "Arbres"
+      },
+      "grass": {
+        "name": "Graminées"
+      },
+      "weeds": {
+        "name": "Herbacées"
+      },
+      "region": {
+        "name": "Région",
+        "state": {
+          "fr": "France",
+          "it": "Italie",
+          "nl": "Pays-Bas",
+          "uk": "Grande-Bretagne",
+          "us": "États-Unis"
+        }
+      },
+      "latitude": {
+        "name": "Latitude"
+      },
+      "longitude": {
+        "name": "Longitude"
+      },
+      "last_updated": {
+        "name": "Dernière mise à jour"
+      }
+    }
+  }
 }

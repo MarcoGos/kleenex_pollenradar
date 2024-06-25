@@ -37,9 +37,9 @@ class PollenApi:
         longitude: float = 0,
     ) -> None:
         self._session = session
-        self._region = region
-        self._latitude = latitude
-        self._longitude = longitude
+        self.region = region
+        self.latitude = latitude
+        self.longitude = longitude
 
     async def async_get_data(self) -> list[dict[str, Any]]:
         """Get data from the API."""
@@ -47,20 +47,20 @@ class PollenApi:
         return self._pollen
 
     async def refresh_data(self):
-        if self._latitude != 0 and self._longitude != 0:
+        if self.latitude != 0 and self.longitude != 0:
             success = await self.__request_by_latitude_longitude()
-        if success:
-            _LOGGER.debug("Trying to __decode_raw_data")
-            self.__decode_raw_data()
+            if success:
+                _LOGGER.debug("Trying to __decode_raw_data")
+                self.__decode_raw_data()
 
     async def __request_by_latitude_longitude(self) -> bool:
-        data = {"lat": self._latitude, "lng": self._longitude}
+        data = {"lat": self.latitude, "lng": self.longitude}
         _LOGGER.debug(f"__request_by_latitude_longitude, data={data}")
         success = await self.__perform_request(self.__get_url_by_region(), data)
         return success
 
     def __get_url_by_region(self) -> str:
-        return REGIONS[self._region]["url"]
+        return REGIONS[self.region]["url"]
 
     async def __perform_request(self, url: str, data: Any) -> bool:
         _LOGGER.debug(f"Send {data} to {url} with headers {self._headers}")
@@ -135,4 +135,4 @@ class PollenApi:
 
     @property
     def position(self) -> str:
-        return f"{self._latitude}x{self._longitude}"
+        return f"{self.latitude}x{self.longitude}"

@@ -1,22 +1,54 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Apparaat is al geconfigureerd"
-        },
-        "error": {
-            "cannot_connect": "Er zijn problemen met de verbinding",
-            "invalid_auth": "Het lijkt er op dat uw position zich niet de gekozen regio bevindt",
-            "unknown": "Onverwachte foutmelding"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "region": "Regio",
-                    "name": "Naam",
-                    "latitude": "Breedtegraad",
-                    "longitude": "Lengtegraad"
-                }
-            }
+  "config": {
+      "abort": {
+          "already_configured": "Apparaat is al geconfigureerd"
+      },
+      "error": {
+          "cannot_connect": "Er zijn problemen met de verbinding",
+          "invalid_auth": "Het lijkt er op dat uw position zich niet de gekozen regio bevindt",
+          "unknown": "Onverwachte foutmelding"
+      },
+      "step": {
+          "user": {
+              "data": {
+                  "region": "Regio",
+                  "name": "Naam",
+                  "latitude": "Breedtegraad",
+                  "longitude": "Lengtegraad"
+              }
+          }
+      }
+  },
+  "entity": {
+    "sensor": {
+      "trees": {
+        "name": "Bomen"
+      },
+      "grass": {
+        "name": "Gras"
+      },
+      "weeds": {
+        "name": "Kruiden"
+      },
+      "region": {
+        "name": "Regio",
+        "state": {
+          "fr": "Frankrijk",
+          "it": "Italië",
+          "nl": "Nederland",
+          "uk": "Groot-Brittannië",
+          "us": "Verenigde Staten"
         }
+      },
+      "latitude": {
+        "name": "Breedtegraad"
+      },
+      "longitude": {
+        "name": "Lengtegraad"
+      },
+      "last_updated": {
+        "name": "Laatst bijgewerkt"
+      }
     }
+  }
 }

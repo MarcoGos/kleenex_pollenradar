@@ -8,148 +8,157 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.entity import EntityCategory
-from homeassistant.helpers.device_registry import DeviceEntryType
-from homeassistant.components.sensor import SensorDeviceClass
+from homeassistant.helpers.typing import StateType
+from homeassistant.components.sensor import (
+    SensorEntity,
+    SensorDeviceClass,
+    SensorEntityDescription,
+)
 
 from .coordinator import PollenDataUpdateCoordinator
-from .const import DOMAIN, NAME, MODEL, MANUFACTURER
+from .const import DOMAIN as SENSOR_DOMAIN, NAME
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_devices: AddEntitiesCallback
-) -> None:
-    coordinator: PollenDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
-
-    INSTRUMENTS = [
-        ("trees", "Tree Pollen", "trees", "mdi:tree", None, None),
-        ("grass", "Grass Pollen", "grass", "mdi:grass", None, None),
-        ("weeds", "Weed Pollen", "weeds", "mdi:cannabis", None, None),
-        (
-            "last_updated_pollen",
-            "Last Updated (Pollen)",
-            "",
-            "mdi:clock-outline",
-            SensorDeviceClass.TIMESTAMP,
-            EntityCategory.DIAGNOSTIC,
+def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
+    descriptions: list[SensorEntityDescription] = [
+        SensorEntityDescription(
+            key="trees",
+            translation_key="trees",
+            icon="mdi:tree",
+            state_class="measurement",
+            native_unit_of_measurement="ppm",
+        ),
+        SensorEntityDescription(
+            key="grass",
+            translation_key="grass",
+            icon="mdi:grass",
+            state_class="measurement",
+            native_unit_of_measurement="ppm",
+        ),
+        SensorEntityDescription(
+            key="weeds",
+            translation_key="weeds",
+            icon="mdi:cannabis",
+            state_class="measurement",
+            native_unit_of_measurement="ppm",
+        ),
+        SensorEntityDescription(
+            key="last_updated",
+            translation_key="last_updated",
+            icon="mdi:clock-outline",
+            device_class=SensorDeviceClass.TIMESTAMP,
+            entity_category=EntityCategory.DIAGNOSTIC,
+        ),
+        SensorEntityDescription(
+            key="latitude",
+            translation_key="latitude",
+            icon="mdi:latitude",
+            entity_category=EntityCategory.DIAGNOSTIC,
+            entity_registry_enabled_default=False
+        ),
+        SensorEntityDescription(
+            key="longitude",
+            translation_key="longitude",
+            icon="mdi:longitude",
+            entity_category=EntityCategory.DIAGNOSTIC,
+            entity_registry_enabled_default=False
+        ),
+        SensorEntityDescription(
+            key="region",
+            translation_key="region",
+            icon="mdi:earth",
+            device_class=SensorDeviceClass.ENUM,
+            entity_category=EntityCategory.DIAGNOSTIC,
+            options=[
+                "fr",
+                "it",
+                "nl",
+                "uk",
+                "us"
+            ],
+            entity_registry_enabled_default=False
         ),
     ]
+    return descriptions
 
-    sensors = [
-        KleenexSensor(
-            coordinator,
-            entry,
-            id,
-            description,
-            key,
-            icon,
-            device_class,
-            entity_category,
+
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+) -> None:
+    coordinator: PollenDataUpdateCoordinator = hass.data[SENSOR_DOMAIN][entry.entry_id]
+    entities: list[KleenexSensor] = []
+
+    for description in get_sensor_descriptions():
+        entities.append(
+            KleenexSensor(
+                coordinator=coordinator,
+                entry_id=entry.entry_id,
+                description=description,
+            )
         )
-        for id, description, key, icon, device_class, entity_category in INSTRUMENTS
-    ]
-
-    async_add_devices(sensors, True)
+    async_add_entities(entities)
 
 
-class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator]):
+class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity):
+
+    _attr_has_entity_name = True
+
     def __init__(
         self,
         coordinator: PollenDataUpdateCoordinator,
-        entry: ConfigEntry,
-        id: str,
-        description: str,
-        key: str,
-        icon: str,
-        device_class: str | None,
-        entity_category: ConfigEntry | None,
+        entry_id: str,
+        description: SensorEntityDescription,
     ) -> None:
         super().__init__(coordinator)
-        self._id = id
-        self.description = description
-        self.key = key
-        self._icon = icon
-        self._device_class: str | None = device_class
-        self._entry: ConfigEntry = entry
-        self._attr_entity_category: ConfigEntry = entity_category
+        self.entity_description = description
+        self._attr_unique_id = f"{entry_id}-{NAME}" f"{description.key}"
+        self._attr_device_info = coordinator.device_info
 
     @property
-    def state(self) -> str:
-        if self.key != "":
-            return self.coordinator.data[0][self.key]["pollen"]
+    def native_value(self) -> StateType:
+        """Return the state of the sensor."""
+        key = self.entity_description.key
+        _LOGGER.debug(f"{self.coordinator.data[0]}")
+        data = self.coordinator.data[0]
+        if key not in data:
+            return getattr(self.coordinator, key)
+        pollen_info = data[key]
+        if self.entity_description.native_unit_of_measurement is not None:
+            default_value = 0
         else:
-            return self.coordinator.last_updated
-
-    @property
-    def unit_of_measurement(self) -> str:
-        if self.key != "":
-            return self.coordinator.data[0][self.key]["unit_of_measure"]
-
-    @property
-    def icon(self) -> str:
-        return self._icon
-
-    @property
-    def device_class(self) -> str:
-        return self._device_class
-
-    @property
-    def name(self) -> str:
-        return f"{self.description} ({self._entry.data['name']})"
-
-    @property
-    def id(self) -> str:
-        return f"{DOMAIN}_{self._id}"
-
-    @property
-    def unique_id(self) -> str:
-        return f"{DOMAIN}-{self._id}-{self._entry.data['name']}"
-
-    @property
-    def device_info(self) -> dict[str, Any]:
-        return {
-            "entry_type": DeviceEntryType.SERVICE,
-            "identifiers": {(DOMAIN, self.coordinator.api.position)},
-            "name": f"{NAME} ({self._entry.data['name']})",
-            "model": MODEL,
-            "manufacturer": MANUFACTURER,
-        }
-
-    @property
-    def available(self) -> bool:
-        return not not self.coordinator.data
-
-    @property
-    def should_poll(self) -> bool:
-        return False
+            default_value = "-"
+        return int(pollen_info.get("pollen", default_value))  # type: ignore
 
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
+        key = self.entity_description.key
+        if key not in self.coordinator.data[0]:
+            return None
         MAPPINGS: dict[str, dict[str, Any]] = {
             "value": {"data": "pollen", "func": int},
             "level": {"data": "level"},
             "details": {"data": "details"},
         }
         data: dict[str, dict[str, Any] | list[Any]] = {}
-        if self.key != "":  # trees, weeds, grass
-            data["current"] = {
-                "date": self.coordinator.data[0]["date"],
-                "level": self.coordinator.data[0][self.key]["level"],
-                "details": self.coordinator.data[0][self.key]["details"],
-            }
-            data["forecast"] = []
-            for offset in range(1, 5):
-                forecast_entry: dict[str, Any] = {}
-                forecast_entry["date"] = self.coordinator.data[offset]["date"]
-                for mapping_key in MAPPINGS:
-                    mapping = MAPPINGS[mapping_key]
-                    forecast_entry[mapping_key] = self.coordinator.data[offset][
-                        self.key
-                    ][mapping.get("data")]
-                    if "func" in mapping:
-                        forecast_entry[mapping_key] = mapping["func"](
-                            forecast_entry[mapping_key]
-                        )
-                data["forecast"].append(forecast_entry)
+        data["current"] = {
+            "date": self.coordinator.data[0]["date"],
+            "level": self.coordinator.data[0][key]["level"],
+            "details": self.coordinator.data[0][key]["details"],
+        }
+        data["forecast"] = []
+        for offset in range(1, 5):
+            forecast_entry: dict[str, Any] = {}
+            forecast_entry["date"] = self.coordinator.data[offset]["date"]
+            for mapping_key, mapping in MAPPINGS.items():
+                # mapping = MAPPINGS[mapping_key]
+                forecast_entry[mapping_key] = self.coordinator.data[offset][key][
+                    mapping.get("data")
+                ]
+                if "func" in mapping:
+                    forecast_entry[mapping_key] = mapping["func"](
+                        forecast_entry[mapping_key]
+                    )  # type: ignore
+            data["forecast"].append(forecast_entry)
         return data
