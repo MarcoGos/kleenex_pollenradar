@@ -1,19 +1,18 @@
 {
   "domain": "kleenex_pollenradar",
   "name": "Kleenex Pollen Radar",
-  "version": "1.0.0",
-  "config_flow": true,
-  "documentation": "https://github.com/MarcoGos/kleenex_pollenradar",
-  "requirements": [
-    "beautifulsoup4==4.10.0"
-  ],
-  "ssdp": [],
-  "zeroconf": [],
-  "homekit": {},
-  "dependencies": [],
   "codeowners": [
     "@MarcoGos"
   ],
-  "iot_class": "cloud_polling",
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/MarcoGos/kleenex_pollenradar",
+  "homekit": {},
   "integration_type": "hub"
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/MarcoGos/kleenex_pollen/issues",
+  "requirements": ["beautifulsoup4==4.10.0"],
+  "ssdp": [],
+  "version": "1.0.0",
+  "zeroconf": [],
 }
