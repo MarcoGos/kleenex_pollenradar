@@ -2,7 +2,7 @@
 
 # Kleenex pollen radar / Scottex
 
-This is a custom integration of the Kleenex pollen radar/Scottex. It will provide information about pollen counts and levels for trees, grass and weeds. Information will only be available for positions in the Netherlands, United Kingdom, France, Italy and United States of America.
+This is a custom integration of the Kleenex pollen radar/Scottex. It will provide information about pollen counts and levels for trees, grass and weeds. Information will only be available for positions in the Netherlands, United Kingdom, France, Italy and United States of America as Kleenex/Scottex only provides information for these countries.
 
 ## Installation
 
