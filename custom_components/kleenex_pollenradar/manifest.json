@@ -10,7 +10,7 @@
   "homekit": {},
   "integration_type": "hub",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/MarcoGos/kleenex_pollen/issues",
+  "issue_tracker": "https://github.com/MarcoGos/kleenex_pollenradar/issues",
   "requirements": ["beautifulsoup4==4.10.0"],
   "ssdp": [],
   "version": "1.0.0",
