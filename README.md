@@ -1,4 +1,9 @@
-![Version](https://img.shields.io/github/v/release/MarcoGos/kleenex_pollenradar?include_prereleases)
+[![GitHub Release][releases-shield]][releases]
+[![GitHub Activity][commits-shield]][commits]
+![Install Stats][stats]
+
+![Project Maintenance][maintenance-shield]
+[![Community Forum][forum-shield]][forum]
 
 # Kleenex pollen radar / Scottex
 
@@ -43,3 +48,12 @@ Use this integratiion at your own risk. Kleemex/Scottex may update or modify its
 
 ## Contributions
  * [hocuspocus69](https://github.com/hocuspocus69) &#8594; Added the Italian version.
+
+[commits-shield]: https://img.shields.io/github/commit-activity/y/MarcoGos/kleenex_pollenradar.svg?style=for-the-badge
+[commits]: https://github.com/MarcoGos/kleenex_pollenradar/commits/main
+[forum]: https://community.home-assistant.io/
+[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
+[maintenance-shield]: https://img.shields.io/badge/maintainer-%40MarcoGos-blue.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/MarcoGos/kleenex_pollenradar.svg?style=for-the-badge
+[releases]: https://github.com/MarcoGos/kleenex_pollenradar/releases
+[stats]: https://img.shields.io/badge/dynamic/json?color=41BDF5&logo=home-assistant&label=integration%20usage&suffix=%20installs&cacheSeconds=15600&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.kleenex_pollenradar.total&style=for-the-badge
