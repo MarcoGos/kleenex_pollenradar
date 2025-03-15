@@ -76,7 +76,8 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
                 "it",
                 "nl",
                 "uk",
-                "us"
+                "us",
+                "de"
             ],
             entity_registry_enabled_default=False
         ),

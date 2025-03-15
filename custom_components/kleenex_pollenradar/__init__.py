@@ -1,4 +1,4 @@
-"""The Kleenex pollenradar integration."""
+"""The Kleenex/DWD pollenradar integration."""
 from __future__ import annotations
 
 from typing import Any
@@ -29,11 +29,12 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 async def async_setup(hass: HomeAssistant, config: Any) -> bool:
+    """Set up the Kleenex/DWD Pollen component."""
     return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Kleenex pollen from a config entry."""
+    """Set up Kleenex/DWD pollen from a config entry."""
     if hass.data.get(DOMAIN) is None:
         hass.data.setdefault(DOMAIN, {})
 
@@ -41,28 +42,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     latitude = entry.data[CONF_LATITUDE]
     longitude = entry.data[CONF_LONGITUDE]
 
-    _LOGGER.debug(f"entry.data: {entry.data}")
+    _LOGGER.debug(f"Setting up {DOMAIN} integration for region: {region}")
 
-    session = async_get_clientsession(hass)
-    api = PollenApi(
-        session=session,
+    coordinator = PollenDataUpdateCoordinator(
+        hass=hass,
         region=region,
         latitude=latitude,
         longitude=longitude,
     )
 
-    device_info = DeviceInfo(
-        entry_type=DeviceEntryType.SERVICE,
-        identifiers={(DOMAIN, f"{latitude}x{longitude}")},
-        name=f"{NAME} ({entry.data['name']})",
-        model=MODEL,
-        manufacturer=MANUFACTURER,
-    )
-
-    hass.data[DOMAIN][entry.entry_id] = coordinator = PollenDataUpdateCoordinator(
-        hass, api=api, device_info=device_info)
-
     await coordinator.async_config_entry_first_refresh()
+
+    hass.data[DOMAIN][entry.entry_id] = coordinator
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(async_reload_entry))

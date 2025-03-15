@@ -1,0 +1,55 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Gerät ist bereits konfiguriert"
+    },
+    "error": {
+      "cannot_connect": "Verbindung fehlgeschlagen",
+      "invalid_auth": "Die Position scheint nicht in der gewählten Region zu liegen",
+      "unknown": "Unerwarteter Fehler"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "region": "Region",
+          "latitude": "Breitengrad",
+          "longitude": "Längengrad",
+          "name": "Name"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "trees": {
+        "name": "Bäume"
+      },
+      "grass": {
+        "name": "Gräser"
+      },
+      "weeds": {
+        "name": "Unkräuter"
+      },
+      "region": {
+        "name": "Region",
+        "state": {
+          "fr": "Frankreich",
+          "it": "Italien",
+          "nl": "Niederlande",
+          "uk": "Großbritannien",
+          "us": "Vereinigte Staaten von Amerika",
+          "de": "Deutschland (Dresden)"
+        }
+      },
+      "latitude": {
+        "name": "Breitengrad"
+      },
+      "longitude": {
+        "name": "Längengrad"
+      },
+      "last_updated": {
+        "name": "Zuletzt aktualisiert"
+      }
+    }
+  }
+} 

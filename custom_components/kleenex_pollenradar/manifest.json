@@ -1,6 +1,6 @@
 {
   "domain": "kleenex_pollenradar",
-  "name": "Kleenex Pollen Radar",
+  "name": "Kleenex/DWD Pollen Radar",
   "codeowners": [
     "@MarcoGos"
   ],
@@ -11,7 +11,10 @@
   "integration_type": "hub",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/MarcoGos/kleenex_pollenradar/issues",
-  "requirements": ["beautifulsoup4==4.10.0"],
+  "requirements": [
+    "beautifulsoup4==4.10.0",
+    "aiohttp>=3.8.0"
+  ],
   "ssdp": [],
   "version": "1.0.0",
   "zeroconf": []
