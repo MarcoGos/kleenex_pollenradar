@@ -1,14 +1,14 @@
 from typing import Any
 
 # import requests
-from bs4 import BeautifulSoup
 from datetime import datetime, date
 import logging
 import aiohttp
+import async_timeout
+
+from bs4 import BeautifulSoup
 
 from .const import DOMAIN, REGIONS
-
-import async_timeout
 
 TIMEOUT = 10
 
@@ -55,7 +55,7 @@ class PollenApi:
 
     async def __request_by_latitude_longitude(self) -> bool:
         data = {"lat": self.latitude, "lng": self.longitude}
-        _LOGGER.debug(f"__request_by_latitude_longitude, data={data}")
+        _LOGGER.debug("__request_by_latitude_longitude, data=%s", data)
         success = await self.__perform_request(self.__get_url_by_region(), data)
         return success
 
@@ -63,27 +63,27 @@ class PollenApi:
         return REGIONS[self.region]["url"]
 
     async def __perform_request(self, url: str, data: Any) -> bool:
-        _LOGGER.debug(f"Send {data} to {url} with headers {self._headers}")
-        with async_timeout.timeout(TIMEOUT):
+        _LOGGER.debug("Send %s to %s with headers %s", data, url, self._headers)
+        async with async_timeout.timeout(TIMEOUT):
             response = await self._session.post(
                 url=url, data=data, headers=self._headers
             )
         if response.ok:
-            self._raw_data = await response.text()  # .content.decode("utf-8")
-            _LOGGER.debug(f"{DOMAIN} - __perform_request succeeded")
+            self._raw_data = await response.text()
+            _LOGGER.debug("%s - __perform_request succeeded", DOMAIN)
         else:
-            _LOGGER.error(f"Error: {DOMAIN} - __perform_request {response.status}")
+            _LOGGER.error("Error: %s - __perform_request %s", DOMAIN, response.status)
         return response.ok
 
     def __decode_raw_data(self):
         self._pollen = []
         soup = BeautifulSoup(self._raw_data, "html.parser")
-        _LOGGER.debug(f"Just loaded into BeautifulSoup")
+        _LOGGER.debug("Just loaded into BeautifulSoup")
         results = soup.find_all("button", class_="day-link")
         for day in results:
             day_no = int(day.select("span.day-number")[0].contents[0])
             pollen_date = self.__determine_pollen_date(day_no)
-            _LOGGER.debug(f"Found day {day_no} {pollen_date}")
+            _LOGGER.debug("Found day %d %s", day_no, pollen_date)
             pollen: dict[str, Any] = {
                 "day": day_no,
                 "date": pollen_date,
@@ -93,12 +93,14 @@ class PollenApi:
                     f"data-{pollen_type}-count"
                 ).split(" ")
                 pollen_level = day.get(f"data-{pollen_type}")
-                pollen[pollen_type] = {
-                    "pollen": pollen_count,
-                    "level": pollen_level,
-                    "unit_of_measure": unit_of_measure.lower(),
-                    "details": [],
-                }
+                try:
+                    pollen[pollen_type] = int(pollen_count)
+                except ValueError:
+                    pollen[pollen_type] = 0
+                pollen[f"{pollen_type}_level"] = pollen_level
+                pollen[f"{pollen_type}_unit_of_measure"] = unit_of_measure.lower()
+                pollen[f"{pollen_type}_details"] = []
+
                 pollen_detail_type = self._pollen_detail_types[pollen_type]
                 pollen_details = day.get(f"data-{pollen_detail_type}-detail").split("|")
                 for item in pollen_details:
@@ -108,10 +110,10 @@ class PollenApi:
                         "value": int(sub_items[1]),
                         "level": sub_items[2],
                     }
-                    pollen[pollen_type]["details"].append(pollen_detail)
+                    pollen[f"{pollen_type}_details"].append(pollen_detail)
             self._pollen.append(pollen)
-            _LOGGER.debug(f"Day {day_no} with info {pollen}")
-        _LOGGER.debug(f"Pollen info {self._pollen}")
+            _LOGGER.debug("Day %d with info %s", day_no, pollen)
+        _LOGGER.debug("Pollen info %s", self._pollen)
 
     def get_pollen_info(self) -> list[dict[str, Any]]:
         return self._pollen

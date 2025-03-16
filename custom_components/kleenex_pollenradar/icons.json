@@ -1,0 +1,33 @@
+{
+    "entity": {
+        "sensor": {
+            "trees_level": {
+                "default": "mdi:gauge-empty",
+                "state": {
+                    "low": "mdi:gauge-empty",
+                    "moderate": "mdi:gauge-low",
+                    "high": "mdi:gauge",
+                    "very high": "mdi:gauge-full"
+                }
+            },
+            "grass_level": {
+                "default": "mdi:gauge-empty",
+                "state": {
+                    "low": "mdi:gauge-empty",
+                    "moderate": "mdi:gauge-low",
+                    "high": "mdi:gauge",
+                    "very high": "mdi:gauge-full"
+                }
+            },
+            "weeds_level": {
+                "default": "mdi:gauge-empty",
+                "state": {
+                    "low": "mdi:gauge-empty",
+                    "moderate": "mdi:gauge-low",
+                    "high": "mdi:gauge",
+                    "very high": "mdi:gauge-full"
+                }
+            }
+        }
+    }
+}

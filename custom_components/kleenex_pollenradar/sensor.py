@@ -22,6 +22,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
+    level_options = ["low", "moderate", "high", "very high"]
     descriptions: list[SensorEntityDescription] = [
         SensorEntityDescription(
             key="trees",
@@ -31,6 +32,12 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
             native_unit_of_measurement="ppm",
         ),
         SensorEntityDescription(
+            key="trees_level",
+            translation_key="trees_level",
+            device_class=SensorDeviceClass.ENUM,
+            options=level_options,
+        ),
+        SensorEntityDescription(
             key="grass",
             translation_key="grass",
             icon="mdi:grass",
@@ -38,11 +45,23 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
             native_unit_of_measurement="ppm",
         ),
         SensorEntityDescription(
+            key="grass_level",
+            translation_key="grass_level",
+            device_class=SensorDeviceClass.ENUM,
+            options=level_options,
+        ),
+        SensorEntityDescription(
             key="weeds",
             translation_key="weeds",
-            icon="mdi:cannabis",
+            icon="mdi:flower-pollen",
             state_class="measurement",
             native_unit_of_measurement="ppm",
+        ),
+        SensorEntityDescription(
+            key="weeds_level",
+            translation_key="weeds_level",
+            device_class=SensorDeviceClass.ENUM,
+            options=level_options,
         ),
         SensorEntityDescription(
             key="last_updated",
@@ -120,45 +139,30 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
     def native_value(self) -> StateType:
         """Return the state of the sensor."""
         key = self.entity_description.key
-        _LOGGER.debug(f"{self.coordinator.data[0]}")
-        data = self.coordinator.data[0]
-        if key not in data:
+        _LOGGER.debug(self.coordinator.data[0])
+        current = self.coordinator.data[0]
+        if key not in current:
             return getattr(self.coordinator, key)
-        pollen_info = data[key]
         if self.entity_description.native_unit_of_measurement is not None:
             default_value = 0
         else:
             default_value = "-"
-        return int(pollen_info.get("pollen", default_value))  # type: ignore
+        value = current.get(key, default_value)
+        return value
 
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
         key = self.entity_description.key
-        if key not in self.coordinator.data[0]:
+        if key not in ['trees', 'grass', 'weeds']:
             return None
-        MAPPINGS: dict[str, dict[str, Any]] = {
-            "value": {"data": "pollen", "func": int},
-            "level": {"data": "level"},
-            "details": {"data": "details"},
-        }
         data: dict[str, dict[str, Any] | list[Any]] = {}
-        data["current"] = {
-            "date": self.coordinator.data[0]["date"],
-            "level": self.coordinator.data[0][key]["level"],
-            "details": self.coordinator.data[0][key]["details"],
-        }
         data["forecast"] = []
-        for offset in range(1, 5):
+        for day_data in self.coordinator.data:
             forecast_entry: dict[str, Any] = {}
-            forecast_entry["date"] = self.coordinator.data[offset]["date"]
-            for mapping_key, mapping in MAPPINGS.items():
-                # mapping = MAPPINGS[mapping_key]
-                forecast_entry[mapping_key] = self.coordinator.data[offset][key][
-                    mapping.get("data")
-                ]
-                if "func" in mapping:
-                    forecast_entry[mapping_key] = mapping["func"](
-                        forecast_entry[mapping_key]
-                    )  # type: ignore
+            for data_key in ["date", key, f"{key}_level", f"{key}_details"]:
+                if data_key == key:
+                    forecast_entry['value'] = day_data[data_key]
+                else:
+                    forecast_entry[data_key] = day_data[data_key]
             data["forecast"].append(forecast_entry)
         return data

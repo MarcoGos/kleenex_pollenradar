@@ -27,11 +27,6 @@ from .coordinator import PollenDataUpdateCoordinator
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
-
-async def async_setup(hass: HomeAssistant, config: Any) -> bool:
-    return True
-
-
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Kleenex pollen from a config entry."""
     if hass.data.get(DOMAIN) is None:
@@ -41,7 +36,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     latitude = entry.data[CONF_LATITUDE]
     longitude = entry.data[CONF_LONGITUDE]
 
-    _LOGGER.debug(f"entry.data: {entry.data}")
+    _LOGGER.debug("entry.data: %s", entry.data)
 
     session = async_get_clientsession(hass)
     api = PollenApi(

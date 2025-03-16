@@ -24,11 +24,38 @@
       "trees": {
         "name": "Bomen"
       },
+      "trees_level": {
+        "name": "Bomen niveau",
+        "state": {
+          "low": "Laag",
+          "moderate": "Gemiddeld",
+          "high": "Hoog",
+          "very high": "Zeer hoog"
+        }
+      },
       "grass": {
         "name": "Gras"
       },
+      "grass_level": {
+        "name": "Gras niveau",
+        "state": {
+          "low": "Laag",
+          "moderate": "Gemiddeld",
+          "high": "Hoog",
+          "very high": "Zeer hoog"
+        }
+      },
       "weeds": {
         "name": "Kruiden"
+      },
+      "weeds_level": {
+        "name": "Kruiden niveau",
+        "state": {
+          "low": "Laag",
+          "moderate": "Gemiddeld",
+          "high": "Hoog",
+          "very high": "Zeer hoog"
+        }
       },
       "region": {
         "name": "Regio",

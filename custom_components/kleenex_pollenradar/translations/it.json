@@ -24,11 +24,38 @@
       "trees": {
         "name": "Alberi"
       },
+      "trees_level": {
+        "name": "Alberi livello",
+        "state": {
+          "low": "Basso",
+          "moderate": "Moderato",
+          "high": "Alto",
+          "very high": "Molto alto"
+        }
+      },
       "grass": {
         "name": "Graminacee"
       },
+      "grass_level": {
+        "name": "Graminacee livello",
+        "state": {
+          "low": "Basso",
+          "moderate": "Moderato",
+          "high": "Alto",
+          "very high": "Molto alto"
+        }
+      },
       "weeds": {
         "name": "Erba"
+      },
+      "weeds_level": {
+        "name": "Erba livello",
+        "state": {
+          "low": "Basso",
+          "moderate": "Moderato",
+          "high": "Alto",
+          "very high": "Molto alto"
+        }
       },
       "region": {
         "name": "Regione",
