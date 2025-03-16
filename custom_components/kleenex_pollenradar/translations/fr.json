@@ -25,7 +25,7 @@
         "name": "Arbres",
         "state_attributes": {
           "level": {
-            "name": "Level",
+            "name": "Niveau",
             "state": {
               "low": "Faible",
               "moderate": "Modéré",
@@ -48,7 +48,7 @@
         "name": "Graminées",
         "state_attributes": {
           "level": {
-            "name": "Level",
+            "name": "Niveau",
             "state": {
               "low": "Faible",
               "moderate": "Modéré",
@@ -71,7 +71,7 @@
         "name": "Herbacées",
         "state_attributes": {
           "level": {
-            "name": "Level",
+            "name": "Niveau",
             "state": {
               "low": "Faible",
               "moderate": "Modéré",

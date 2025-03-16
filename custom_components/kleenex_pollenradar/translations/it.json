@@ -25,7 +25,7 @@
         "name": "Alberi",
         "state_attributes": {
           "level": {
-            "name": "Level",
+            "name": "Livello",
             "state": {
               "low": "Basso",
               "moderate": "Moderato",
@@ -48,7 +48,7 @@
         "name": "Graminacee",
         "state_attributes": {
           "level": {
-            "name": "Level",
+            "name": "Livello",
             "state": {
               "low": "Basso",
               "moderate": "Moderato",
@@ -71,7 +71,7 @@
         "name": "Erba",
         "state_attributes": {
           "level": {
-            "name": "Level",
+            "name": "Livello",
             "state": {
               "low": "Basso",
               "moderate": "Moderato",

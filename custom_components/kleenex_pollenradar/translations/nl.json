@@ -25,7 +25,7 @@
         "name": "Bomen",
         "state_attributes": {
           "level": {
-            "name": "Level",
+            "name": "Niveau",
             "state": {
               "low": "Laag",
               "moderate": "Gemiddeld",
@@ -48,7 +48,7 @@
         "name": "Gras",
         "state_attributes": {
           "level": {
-            "name": "Level",
+            "name": "Niveau",
             "state": {
               "low": "Laag",
               "moderate": "Gemiddeld",
@@ -71,7 +71,7 @@
         "name": "Kruiden",
         "state_attributes": {
           "level": {
-            "name": "Level",
+            "name": "Niveau",
             "state": {
               "low": "Laag",
               "moderate": "Gemiddeld",
