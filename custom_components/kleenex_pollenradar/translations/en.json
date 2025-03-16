@@ -22,7 +22,18 @@
   "entity": {
     "sensor": {
       "trees": {
-        "name": "Trees"
+        "name": "Trees",
+        "state_attributes": {
+          "level": {
+            "name": "Level",
+            "state": {
+              "low": "Low",
+              "moderate": "Moderate",
+              "high": "High",
+              "very_high": "Very High"
+            }
+          }
+        }
       },
       "trees_level": {
         "name": "Trees Level",
