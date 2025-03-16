@@ -22,7 +22,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
-    level_options = ["low", "moderate", "high", "very high"]
+    level_options = ["low", "moderate", "high", "very_high"]
     descriptions: list[SensorEntityDescription] = [
         SensorEntityDescription(
             key="trees",
@@ -62,6 +62,13 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
             translation_key="weeds_level",
             device_class=SensorDeviceClass.ENUM,
             options=level_options,
+        ),
+        SensorEntityDescription(
+            key="date",
+            translation_key="date",
+            icon="mdi:calendar",
+            device_class=SensorDeviceClass.DATE,
+            entity_category=EntityCategory.DIAGNOSTIC,
         ),
         SensorEntityDescription(
             key="last_updated",
@@ -159,10 +166,8 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
         data["forecast"] = []
         for day_data in self.coordinator.data:
             forecast_entry: dict[str, Any] = {}
+            mapping = { key: "value", f"{key}_level": "level", f"{key}_details": "details" }
             for data_key in ["date", key, f"{key}_level", f"{key}_details"]:
-                if data_key == key:
-                    forecast_entry['value'] = day_data[data_key]
-                else:
-                    forecast_entry[data_key] = day_data[data_key]
+                forecast_entry[mapping.get(data_key, data_key)] = day_data[data_key]
             data["forecast"].append(forecast_entry)
         return data

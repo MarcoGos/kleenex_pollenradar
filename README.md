@@ -28,11 +28,15 @@ During the setup of the integration a region, name, latitude and longitude needs
 
 The following sensors will be registered:
 
-- Tree Pollen
-- Grass Pollen
-- Weed Pollen
+- Tree pollen
+- Tree pollen level
+- Grass pollen
+- Grass pollen level
+- Weeds pollen
+- Weeds pollen level
+- Date
 
-Each sensor has additional attributes for the forecast for the upcoming 4 days.
+The tree/grass/weeds pollen sensors have additional attributes for the forecast for today and the upcoming 4 days.
 
 The sensor information is updated every hour although the values on the Kleenex pollen radar website are usually updated every 3 hours.
 

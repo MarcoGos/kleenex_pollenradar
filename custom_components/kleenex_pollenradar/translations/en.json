@@ -30,7 +30,7 @@
           "low": "Low",
           "moderate": "Moderate",
           "high": "High",
-          "very high": "Very High"
+          "very_high": "Very High"
         }
       },
       "grass": {
@@ -42,7 +42,7 @@
           "low": "Low",
           "moderate": "Moderate",
           "high": "High",
-          "very high": "Very High"
+          "very_high": "Very High"
         }
       },
       "weeds": {
@@ -54,8 +54,11 @@
           "low": "Low",
           "moderate": "Moderate",
           "high": "High",
-          "very high": "Very High"
+          "very_high": "Very High"
         }
+      },
+      "date": {
+        "name": "Date"
       },
       "region": {
         "name": "Region",
