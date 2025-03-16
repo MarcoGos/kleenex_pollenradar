@@ -22,7 +22,18 @@
   "entity": {
     "sensor": {
       "trees": {
-        "name": "Bomen"
+        "name": "Bomen",
+        "state_attributes": {
+          "level": {
+            "name": "Level",
+            "state": {
+              "low": "Laag",
+              "moderate": "Gemiddeld",
+              "high": "Hoog",
+              "very_high": "Zeer hoog"
+            }
+          }
+        }
       },
       "trees_level": {
         "name": "Bomen niveau",
@@ -34,7 +45,18 @@
         }
       },
       "grass": {
-        "name": "Gras"
+        "name": "Gras",
+        "state_attributes": {
+          "level": {
+            "name": "Level",
+            "state": {
+              "low": "Laag",
+              "moderate": "Gemiddeld",
+              "high": "Hoog",
+              "very_high": "Zeer hoog"
+            }
+          }
+        }
       },
       "grass_level": {
         "name": "Gras niveau",
@@ -46,7 +68,18 @@
         }
       },
       "weeds": {
-        "name": "Kruiden"
+        "name": "Kruiden",
+        "state_attributes": {
+          "level": {
+            "name": "Level",
+            "state": {
+              "low": "Laag",
+              "moderate": "Gemiddeld",
+              "high": "Hoog",
+              "very_high": "Zeer hoog"
+            }
+          }
+        }
       },
       "weeds_level": {
         "name": "Kruiden niveau",

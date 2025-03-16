@@ -22,7 +22,18 @@
   "entity": {
     "sensor": {
       "trees": {
-        "name": "Alberi"
+        "name": "Alberi",
+        "state_attributes": {
+          "level": {
+            "name": "Level",
+            "state": {
+              "low": "Basso",
+              "moderate": "Moderato",
+              "high": "Alto",
+              "very_high": "Molto alto"
+            }
+          }
+        }
       },
       "trees_level": {
         "name": "Alberi livello",
@@ -34,7 +45,18 @@
         }
       },
       "grass": {
-        "name": "Graminacee"
+        "name": "Graminacee",
+        "state_attributes": {
+          "level": {
+            "name": "Level",
+            "state": {
+              "low": "Basso",
+              "moderate": "Moderato",
+              "high": "Alto",
+              "very_high": "Molto alto"
+            }
+          }
+        }
       },
       "grass_level": {
         "name": "Graminacee livello",
@@ -46,7 +68,18 @@
         }
       },
       "weeds": {
-        "name": "Erba"
+        "name": "Erba",
+        "state_attributes": {
+          "level": {
+            "name": "Level",
+            "state": {
+              "low": "Basso",
+              "moderate": "Moderato",
+              "high": "Alto",
+              "very_high": "Molto alto"
+            }
+          }
+        }
       },
       "weeds_level": {
         "name": "Erba livello",

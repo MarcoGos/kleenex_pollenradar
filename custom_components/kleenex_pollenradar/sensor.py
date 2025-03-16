@@ -163,6 +163,7 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
         if key not in ['trees', 'grass', 'weeds']:
             return None
         data: dict[str, dict[str, Any] | list[Any]] = {}
+        data["level"] = self.coordinator.data[0][f"{key}_level"]
         data["forecast"] = []
         for day_data in self.coordinator.data:
             forecast_entry: dict[str, Any] = {}

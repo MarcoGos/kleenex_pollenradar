@@ -34,7 +34,18 @@
         }
       },
       "grass": {
-        "name": "Grass"
+        "name": "Grass",
+        "state_attributes": {
+          "level": {
+            "name": "Level",
+            "state": {
+              "low": "Low",
+              "moderate": "Moderate",
+              "high": "High",
+              "very_high": "Very High"
+            }
+          }
+        }
       },
       "grass_level": {
         "name": "Grass Level",
@@ -46,7 +57,18 @@
         }
       },
       "weeds": {
-        "name": "Weeds"
+        "name": "Weeds",
+        "state_attributes": {
+          "level": {
+            "name": "Level",
+            "state": {
+              "low": "Low",
+              "moderate": "Moderate",
+              "high": "High",
+              "very_high": "Very High"
+            }
+          }
+        }
       },
       "weeds_level": {
         "name": "Weeds Level",
