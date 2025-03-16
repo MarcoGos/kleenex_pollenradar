@@ -32,6 +32,9 @@
               "high": "High",
               "very_high": "Very High"
             }
+          },
+          "forecast": {
+            "name": "Forecast"
           }
         }
       },
@@ -55,6 +58,9 @@
               "high": "High",
               "very_high": "Very High"
             }
+          },
+          "forecast": {
+            "name": "Forecast"
           }
         }
       },
@@ -78,6 +84,9 @@
               "high": "High",
               "very_high": "Very High"
             }
+          },
+          "forecast": {
+            "name": "Forecast"
           }
         }
       },

@@ -32,6 +32,9 @@
               "high": "Élevé",
               "very_high": "Très élevé"
             }
+          },
+          "forecast": {
+            "name": "Prévision"
           }
         }
       },
@@ -55,6 +58,9 @@
               "high": "Élevé",
               "very_high": "Très élevé"
             }
+          },
+          "forecast": {
+            "name": "Prévision"
           }
         }
       },
@@ -78,6 +84,9 @@
               "high": "Élevé",
               "very_high": "Très élevé"
             }
+          },
+          "forecast": {
+            "name": "Prévision"
           }
         }
       },
