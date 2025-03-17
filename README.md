@@ -36,7 +36,7 @@ The following sensors will be registered:
 - Weeds pollen level
 - Date
 
-The tree/grass/weeds pollen sensors have additional attributes for the forecast for today and the upcoming 4 days.
+The tree/grass/weeds pollen sensors have additional attributes for the forecast for the upcoming 4 days.
 
 The sensor information is updated every hour although the values on the Kleenex pollen radar website are usually updated every 3 hours.
 

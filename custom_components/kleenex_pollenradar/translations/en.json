@@ -5,7 +5,7 @@
     },
     "error": {
       "cannot_connect": "Failed to connect",
-      "invalid_auth": "Looks like you position isn't within the choosen region",
+      "invalid_auth": "Whether there are problems with the Kleenex service or your location is not within the selected region",
       "unknown": "Unexpected error"
     },
     "step": {
@@ -33,6 +33,9 @@
               "very_high": "Very High"
             }
           },
+          "details": {
+            "name": "Details"
+          },
           "forecast": {
             "name": "Forecast"
           }
@@ -59,6 +62,9 @@
               "very_high": "Very High"
             }
           },
+          "details": {
+            "name": "Details"
+          },
           "forecast": {
             "name": "Forecast"
           }
@@ -84,6 +90,9 @@
               "high": "High",
               "very_high": "Very High"
             }
+          },
+          "details": {
+            "name": "Details"
           },
           "forecast": {
             "name": "Forecast"

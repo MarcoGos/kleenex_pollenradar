@@ -21,11 +21,6 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class PlaceholderHub:
-    """Placeholder class to make tests pass.
-
-    TODO Remove this placeholder class and replace with things from your PyPI package.
-    """
-
     def __init__(self) -> None:
         """Initialize."""
 

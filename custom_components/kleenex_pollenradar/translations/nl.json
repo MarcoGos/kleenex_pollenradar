@@ -1,23 +1,23 @@
 {
   "config": {
-      "abort": {
-          "already_configured": "Apparaat is al geconfigureerd"
-      },
-      "error": {
-          "cannot_connect": "Er zijn problemen met de verbinding",
-          "invalid_auth": "Het lijkt er op dat uw position zich niet de gekozen regio bevindt",
-          "unknown": "Onverwachte foutmelding"
-      },
-      "step": {
-          "user": {
-              "data": {
-                  "region": "Regio",
-                  "name": "Naam",
-                  "latitude": "Breedtegraad",
-                  "longitude": "Lengtegraad"
-              }
-          }
+    "abort": {
+      "already_configured": "Apparaat is al geconfigureerd"
+    },
+    "error": {
+      "cannot_connect": "Er zijn problemen met de verbinding",
+      "invalid_auth": "Of er problemen zijn met de Kleenex service of je locatie bevindt zich niet binnen de geselecteerde regio.",
+      "unknown": "Onverwachte foutmelding"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "region": "Regio",
+          "name": "Naam",
+          "latitude": "Breedtegraad",
+          "longitude": "Lengtegraad"
+        }
       }
+    }
   },
   "entity": {
     "sensor": {
@@ -32,6 +32,9 @@
               "high": "Hoog",
               "very_high": "Zeer hoog"
             }
+          },
+          "details": {
+            "name": "Details"
           },
           "forecast": {
             "name": "Verwachting"
@@ -59,6 +62,9 @@
               "very_high": "Zeer hoog"
             }
           },
+          "details": {
+            "name": "Details"
+          },
           "forecast": {
             "name": "Verwachting"
           }
@@ -84,6 +90,9 @@
               "high": "Hoog",
               "very_high": "Zeer hoog"
             }
+          },
+          "details": {
+            "name": "Details"
           },
           "forecast": {
             "name": "Verwachting"
