@@ -162,12 +162,13 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
         key = self.entity_description.key
         if key not in ['trees', 'grass', 'weeds']:
             return None
-        current = self.coordinator.data.pop(0)
+        current = self.coordinator.data[0]
         data: dict[str, dict[str, Any] | list[Any]] = {}
         data["level"] = current[f"{key}_level"]
         data["details"] = current[f"{key}_details"]
         data["forecast"] = []
-        for day_data in self.coordinator.data:
+        for day_offset in range(1, len(self.coordinator.data) -1):
+            day_data = self.coordinator.data[day_offset]
             forecast_entry: dict[str, Any] = {}
             mapping = { key: "value", f"{key}_level": "level", f"{key}_details": "details" }
             for data_key in ["date", key, f"{key}_level", f"{key}_details"]:
