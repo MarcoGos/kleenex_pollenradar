@@ -30,7 +30,7 @@
               "low": "Laag",
               "moderate": "Gemiddeld",
               "high": "Hoog",
-              "very_high": "Zeer hoog"
+              "very-high": "Zeer hoog"
             }
           },
           "details": {
@@ -47,7 +47,7 @@
           "low": "Laag",
           "moderate": "Gemiddeld",
           "high": "Hoog",
-          "very_high": "Zeer hoog"
+          "very-high": "Zeer hoog"
         }
       },
       "grass": {
@@ -59,7 +59,7 @@
               "low": "Laag",
               "moderate": "Gemiddeld",
               "high": "Hoog",
-              "very_high": "Zeer hoog"
+              "very-high": "Zeer hoog"
             }
           },
           "details": {
@@ -76,7 +76,7 @@
           "low": "Laag",
           "moderate": "Gemiddeld",
           "high": "Hoog",
-          "very_high": "Zeer hoog"
+          "very-high": "Zeer hoog"
         }
       },
       "weeds": {
@@ -88,7 +88,7 @@
               "low": "Laag",
               "moderate": "Gemiddeld",
               "high": "Hoog",
-              "very_high": "Zeer hoog"
+              "very-high": "Zeer hoog"
             }
           },
           "details": {
@@ -105,7 +105,7 @@
           "low": "Laag",
           "moderate": "Gemiddeld",
           "high": "Hoog",
-          "very_high": "Zeer hoog"
+          "very-high": "Zeer hoog"
         }
       },
       "date": {

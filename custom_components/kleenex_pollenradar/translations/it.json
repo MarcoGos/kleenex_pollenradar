@@ -30,7 +30,7 @@
               "low": "Basso",
               "moderate": "Moderato",
               "high": "Alto",
-              "very_high": "Molto alto"
+              "very-high": "Molto alto"
             }
           },
           "details": {
@@ -47,7 +47,7 @@
           "low": "Basso",
           "moderate": "Moderato",
           "high": "Alto",
-          "very_high": "Molto alto"
+          "very-high": "Molto alto"
         }
       },
       "grass": {
@@ -59,7 +59,7 @@
               "low": "Basso",
               "moderate": "Moderato",
               "high": "Alto",
-              "very_high": "Molto alto"
+              "very-high": "Molto alto"
             }
           },
           "details": {
@@ -76,7 +76,7 @@
           "low": "Basso",
           "moderate": "Moderato",
           "high": "Alto",
-          "very_high": "Molto alto"
+          "very-high": "Molto alto"
         }
       },
       "weeds": {
@@ -88,7 +88,7 @@
               "low": "Basso",
               "moderate": "Moderato",
               "high": "Alto",
-              "very_high": "Molto alto"
+              "very-high": "Molto alto"
             }
           },
           "details": {
@@ -105,7 +105,7 @@
           "low": "Basso",
           "moderate": "Moderato",
           "high": "Alto",
-          "very_high": "Molto alto"
+          "very-high": "Molto alto"
         }
       },
       "date": {

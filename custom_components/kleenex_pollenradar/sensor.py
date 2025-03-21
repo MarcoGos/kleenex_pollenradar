@@ -22,7 +22,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
-    level_options = ["low", "moderate", "high", "very_high"]
+    level_options = ["low", "moderate", "high", "very-high"]
     descriptions: list[SensorEntityDescription] = [
         SensorEntityDescription(
             key="trees",
