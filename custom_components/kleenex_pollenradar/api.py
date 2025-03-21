@@ -92,7 +92,7 @@ class PollenApi:
                 pollen_count, unit_of_measure = day.get(
                     f"data-{pollen_type}-count"
                 ).split(" ")
-                pollen_level = day.get(f"data-{pollen_type}").replace(" ", "_")
+                pollen_level = day.get(f"data-{pollen_type}")
                 try:
                     pollen[pollen_type] = int(pollen_count)
                 except ValueError:
