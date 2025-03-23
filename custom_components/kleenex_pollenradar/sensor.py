@@ -167,7 +167,7 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
         data["level"] = current[f"{key}_level"]
         data["details"] = current[f"{key}_details"]
         data["forecast"] = []
-        for day_offset in range(1, len(self.coordinator.data) -1):
+        for day_offset in range(1, len(self.coordinator.data)):
             day_data = self.coordinator.data[day_offset]
             forecast_entry: dict[str, Any] = {}
             mapping = { key: "value", f"{key}_level": "level", f"{key}_details": "details" }
