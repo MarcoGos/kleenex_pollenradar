@@ -17,5 +17,8 @@ Please provide the following information:
 3. Installed version
 4. Home Assistant version
 
+**RAW information**
+Add the content of the Raw attribute of the Date sensor.
+
 **Additional context**
 Add any other context about the problem here.
