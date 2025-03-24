@@ -109,7 +109,12 @@
         }
       },
       "date": {
-        "name": "Data"
+        "name": "Data",
+        "state_attributes": {
+          "raw": {
+            "name": "Crudo"
+          }
+        }
       },
       "region": {
         "name": "Regione",

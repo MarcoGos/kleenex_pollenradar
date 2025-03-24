@@ -109,7 +109,12 @@
         }
       },
       "date": {
-        "name": "Datum"
+        "name": "Datum",
+        "state_attributes": {
+          "raw": {
+            "name": "Ruw"
+          }
+        }
       },
       "region": {
         "name": "Regio",

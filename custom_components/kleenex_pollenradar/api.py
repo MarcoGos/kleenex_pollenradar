@@ -1,7 +1,7 @@
 from typing import Any
 
 # import requests
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import logging
 import aiohttp
 import async_timeout
@@ -92,11 +92,13 @@ class PollenApi:
                 pollen_count, unit_of_measure = day.get(
                     f"data-{pollen_type}-count"
                 ).split(" ")
-                pollen_level = day.get(f"data-{pollen_type}")
                 try:
                     pollen[pollen_type] = int(pollen_count)
                 except ValueError:
                     pollen[pollen_type] = 0
+                pollen_level = day.get(f"data-{pollen_type}")
+                if pollen_level == "":
+                    pollen_level = self.determine_level_by_count(pollen_type, pollen[pollen_type])
                 pollen[f"{pollen_type}_level"] = pollen_level
                 pollen[f"{pollen_type}_unit_of_measure"] = unit_of_measure.lower()
                 pollen[f"{pollen_type}_details"] = []
@@ -114,6 +116,9 @@ class PollenApi:
             self._pollen.append(pollen)
             _LOGGER.debug("Day %d with info %s", day_no, pollen)
         _LOGGER.debug("Pollen info %s", self._pollen)
+
+    def get_raw_data(self) -> str:
+        return self._raw_data
 
     def get_pollen_info(self) -> list[dict[str, Any]]:
         return self._pollen
@@ -138,3 +143,18 @@ class PollenApi:
     @property
     def position(self) -> str:
         return f"{self.latitude}x{self.longitude}"
+
+    def determine_level_by_count(self, pollen_type: str, pollen_count: int) -> str:
+        thresholds = {
+            'trees': [95, 207, 703],
+            'weeds': [20, 77, 266],
+            'grass': [29, 60, 341]
+        }
+
+        categories = ["low", "moderate", "high", "very-high"]
+
+        for i, threshold in enumerate(thresholds.get(pollen_type, [])):
+            if pollen_count <= threshold:
+                return categories[i]
+
+        return "very-high"

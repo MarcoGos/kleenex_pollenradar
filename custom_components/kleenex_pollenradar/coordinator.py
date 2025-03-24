@@ -26,6 +26,7 @@ class PollenDataUpdateCoordinator(DataUpdateCoordinator):
         self.latitude = api.latitude
         self.longitude = api.longitude
         self.region = api.region
+        self.raw: str = ''
 
         super().__init__(
             hass,
@@ -38,6 +39,7 @@ class PollenDataUpdateCoordinator(DataUpdateCoordinator):
         """Update data via library."""
         try:
             data = await self.api.async_get_data()
+            self.raw = self.api.get_raw_data()
             self.last_updated = datetime.now().replace(tzinfo=ZoneInfo(self._hass.config.time_zone))
             return data
         except Exception as exception:

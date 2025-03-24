@@ -16,7 +16,7 @@ from homeassistant.components.sensor import (
 )
 
 from .coordinator import PollenDataUpdateCoordinator
-from .const import DOMAIN as SENSOR_DOMAIN, NAME
+from .const import DOMAIN, NAME
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -111,16 +111,16 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+    hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
-    coordinator: PollenDataUpdateCoordinator = hass.data[SENSOR_DOMAIN][entry.entry_id]
+    coordinator: PollenDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     entities: list[KleenexSensor] = []
 
     for description in get_sensor_descriptions():
         entities.append(
             KleenexSensor(
                 coordinator=coordinator,
-                entry_id=entry.entry_id,
+                entry_id=config_entry.entry_id,
                 description=description,
             )
         )
@@ -160,10 +160,13 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
         key = self.entity_description.key
+        data: dict[str, dict[str, Any] | list[Any]] = {}
+        if key == 'date':
+            data['raw'] = self.coordinator.raw
+            return data
         if key not in ['trees', 'grass', 'weeds']:
             return None
         current = self.coordinator.data[0]
-        data: dict[str, dict[str, Any] | list[Any]] = {}
         data["level"] = current[f"{key}_level"]
         data["details"] = current[f"{key}_details"]
         data["forecast"] = []
