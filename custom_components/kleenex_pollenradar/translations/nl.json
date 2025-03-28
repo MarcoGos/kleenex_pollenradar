@@ -5,7 +5,7 @@
     },
     "error": {
       "cannot_connect": "Er zijn problemen met de verbinding",
-      "invalid_auth": "Of er problemen zijn met de Kleenex service of je locatie bevindt zich niet binnen de geselecteerde regio.",
+      "invalid_auth": "Of er zijn problemen met de Kleenex service of je locatie bevindt zich niet binnen de geselecteerde regio.",
       "unknown": "Onverwachte foutmelding"
     },
     "step": {
