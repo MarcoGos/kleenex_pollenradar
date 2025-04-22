@@ -13,10 +13,7 @@ This is a custom integration of the Kleenex pollen radar/Scottex. It will provid
 
 Via HACS:
 
-- Add the following custom repository as an integration:
-    - MarcoGos/kleenex_pollenradar
-- Restart Home Assistant
-- Add the integration to Home Assistant
+- Search for Kleenex Pollen Radar
 
 ## Setup
 
