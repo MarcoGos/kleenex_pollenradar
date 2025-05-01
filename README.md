@@ -13,7 +13,7 @@ This is a custom integration of the Kleenex pollen radar/Scottex. It will provid
 
 Via HACS:
 
-- Search for Kleenex Pollen Radar
+- Search for Kleenex Pollenradar
 
 ## Setup
 
