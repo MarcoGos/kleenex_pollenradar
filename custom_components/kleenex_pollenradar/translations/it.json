@@ -1,7 +1,8 @@
 {
   "config": {
     "abort": {
-      "already_configured": "E' già configurato"
+      "already_configured": "E' già configurato",
+      "reconfigure_successful": "La riconfigurazione è stata completata con successo"
     },
     "error": {
       "cannot_connect": "non riesco a connettermi",
@@ -15,6 +16,12 @@
           "latitude": "Latitudine",
           "longitude": "Longitudine",
           "name": "Nome"
+        }
+      },
+      "reconfigure": {
+        "data": {
+          "latitude": "Latitudine",
+          "longitude": "Longitudine"
         }
       }
     }
@@ -134,7 +141,15 @@
       },
       "last_updated": {
         "name": "Ultimo aggiornamento"
+      },
+      "error": {
+        "name": "Errore"
       }
+    }
+  },
+  "exceptions": {
+    "dns_error": {
+      "message": "DNS errore"
     }
   }
 }

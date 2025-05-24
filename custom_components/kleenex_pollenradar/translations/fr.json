@@ -1,7 +1,8 @@
 {
   "config": {
     "abort": {
-      "already_configured": "L'appareil est déjà configuré"
+      "already_configured": "L'appareil est déjà configuré",
+      "reconfigure_successful": "La reconfiguration a été réussie"
     },
     "error": {
       "cannot_connect": "Échec de la connexionFailed to connect",
@@ -15,6 +16,12 @@
           "latitude": "Latitude",
           "longitude": "Longitude",
           "name": "Nom"
+        }
+      },
+      "reconfigure": {
+        "data": {
+          "latitude": "Latitude",
+          "longitude": "Longitude"
         }
       }
     }
@@ -134,7 +141,15 @@
       },
       "last_updated": {
         "name": "Dernière mise à jour"
+      },
+      "error": {
+        "name": "Erreur"
       }
+    }
+  },
+  "exceptions": {
+    "dns_error": {
+      "message": "DNS erreurr"
     }
   }
 }

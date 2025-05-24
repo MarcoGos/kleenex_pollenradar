@@ -1,7 +1,8 @@
 {
   "config": {
     "abort": {
-      "already_configured": "Apparaat is al geconfigureerd"
+      "already_configured": "Apparaat is al geconfigureerd",
+      "reconfigure_successful": "Herconfiguratie is geslaagd"
     },
     "error": {
       "cannot_connect": "Er zijn problemen met de verbinding",
@@ -13,6 +14,12 @@
         "data": {
           "region": "Regio",
           "name": "Naam",
+          "latitude": "Breedtegraad",
+          "longitude": "Lengtegraad"
+        }
+      },
+      "reconfigure": {
+        "data": {
           "latitude": "Breedtegraad",
           "longitude": "Lengtegraad"
         }
@@ -134,7 +141,15 @@
       },
       "last_updated": {
         "name": "Laatst bijgewerkt"
+      },
+      "error": {
+        "name": "Fout"
       }
+    }
+  },
+  "exceptions": {
+    "dns_error": {
+      "message": "DNS fout"
     }
   }
 }

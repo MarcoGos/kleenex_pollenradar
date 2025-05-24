@@ -34,3 +34,5 @@ REGIONS = {
     }
 }
 CONF_REGION = "region"
+CONF_NAME = "name"
+RETRY_ATTEMPTS = 5
