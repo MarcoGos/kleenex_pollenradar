@@ -87,7 +87,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 session = async_get_clientsession(self.hass)
                 api = PollenApi(
                     session=session,
-                    region=user_input[CONF_REGION],
+                    region=entry.data[CONF_REGION],
                     latitude=user_input[CONF_LATITUDE],
                     longitude=user_input[CONF_LONGITUDE],
                 )
@@ -118,7 +118,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self.hass.config_entries.async_update_entry(
                     entry,  # type: ignore
                     data=entry.data | user_input,  # type: ignore
-                    title=user_input[CONF_NAME],
+                    title=entry.data[CONF_NAME],
                 )
                 await self.hass.config_entries.async_reload(entry.entry_id)  # type: ignore
                 return self.async_abort(reason="reconfigure_successful")

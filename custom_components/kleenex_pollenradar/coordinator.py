@@ -61,4 +61,4 @@ class PollenDataUpdateCoordinator(DataUpdateCoordinator):
                 await asyncio.sleep(attempt * 2)
 
         _LOGGER.warning("Warning: All %d attempts to get data failed", RETRY_ATTEMPTS)
-        return (self.data or {}) | { "error": error }
+        return (self.data or {}) | {"error": error}
