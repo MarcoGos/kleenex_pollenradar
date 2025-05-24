@@ -101,20 +101,24 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 _LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
             else:
-                device_registry = dr.async_get(self.hass)
-                device = device_registry.async_get_device(
-                    identifiers={
-                        (
-                            DOMAIN,
-                            f"{entry.data[CONF_LATITUDE]}x{entry.data[CONF_LONGITUDE]}",
-                        )
-                    }
-                )
-                if device:
-                    device_registry.async_update_device(
-                        device_id=device.id,
-                        remove_config_entry_id=entry.entry_id,
+                if (
+                    user_input[CONF_LATITUDE] != entry.data[CONF_LATITUDE]
+                    or user_input[CONF_LONGITUDE] != entry.data[CONF_LONGITUDE]
+                ):
+                    device_registry = dr.async_get(self.hass)
+                    device = device_registry.async_get_device(
+                        identifiers={
+                            (
+                                DOMAIN,
+                                f"{entry.data[CONF_LATITUDE]}x{entry.data[CONF_LONGITUDE]}",
+                            )
+                        }
                     )
+                    if device:
+                        device_registry.async_update_device(
+                            device_id=device.id,
+                            remove_config_entry_id=entry.entry_id,
+                        )
                 self.hass.config_entries.async_update_entry(
                     entry,  # type: ignore
                     data=entry.data | user_input,  # type: ignore

@@ -20,18 +20,11 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 class PollenDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
 
-    def __init__(
-        self, hass: HomeAssistant, api: PollenApi, device_info: DeviceInfo
-    ) -> None:
+    def __init__(self, hass: HomeAssistant, api: PollenApi) -> None:
         """Initialize."""
         self.api = api
         self.platforms: list[str] = []
-        self.last_updated = None
-        self.device_info = device_info
         self._hass = hass
-        self.latitude = api.latitude
-        self.longitude = api.longitude
-        self.region = api.region
 
         super().__init__(
             hass,

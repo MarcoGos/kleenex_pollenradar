@@ -6,11 +6,10 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.const import CONF_LATITUDE, CONF_LONGITUDE
 
 from .api import PollenApi
-from .const import DOMAIN, NAME, PLATFORMS, CONF_REGION, MODEL, MANUFACTURER
+from .const import DOMAIN, PLATFORMS, CONF_REGION
 from .coordinator import PollenDataUpdateCoordinator
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
@@ -21,30 +20,16 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     if hass.data.get(DOMAIN) is None:
         hass.data.setdefault(DOMAIN, {})
 
-    region = config_entry.data[CONF_REGION]
-    latitude = config_entry.data[CONF_LATITUDE]
-    longitude = config_entry.data[CONF_LONGITUDE]
-
-    _LOGGER.debug("entry.data: %s", config_entry.data)
-
     session = async_get_clientsession(hass)
     api = PollenApi(
         session=session,
-        region=region,
-        latitude=latitude,
-        longitude=longitude,
-    )
-
-    device_info = DeviceInfo(
-        entry_type=DeviceEntryType.SERVICE,
-        identifiers={(DOMAIN, f"{latitude}x{longitude}")},
-        name=f"{NAME} ({config_entry.data['name']})",
-        model=MODEL,
-        manufacturer=MANUFACTURER,
+        region=config_entry.data[CONF_REGION],
+        latitude=config_entry.data[CONF_LATITUDE],
+        longitude=config_entry.data[CONF_LONGITUDE],
     )
 
     hass.data[DOMAIN][config_entry.entry_id] = coordinator = (
-        PollenDataUpdateCoordinator(hass, api=api, device_info=device_info)
+        PollenDataUpdateCoordinator(hass, api=api)
     )
 
     await coordinator.async_config_entry_first_refresh()

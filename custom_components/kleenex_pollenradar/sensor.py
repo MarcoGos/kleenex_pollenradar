@@ -8,7 +8,8 @@ from typing import Any
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.const import EntityCategory
+from homeassistant.const import EntityCategory, CONF_LATITUDE, CONF_LONGITUDE
+from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
 from homeassistant.components.sensor import (
@@ -18,7 +19,7 @@ from homeassistant.components.sensor import (
 )
 
 from .coordinator import PollenDataUpdateCoordinator
-from .const import DOMAIN, NAME
+from .const import DOMAIN, NAME, MODEL, MANUFACTURER, CONF_NAME
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -123,12 +124,26 @@ async def async_setup_entry(
     coordinator: PollenDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     entities: list[KleenexSensor] = []
 
+    latitude = config_entry.data.get(CONF_LATITUDE)
+    longitude = config_entry.data.get(CONF_LONGITUDE)
+    name = config_entry.data.get(CONF_NAME)
+
+    device_info = DeviceInfo(
+        entry_type=DeviceEntryType.SERVICE,
+        identifiers={(DOMAIN, f"{latitude}x{longitude}")},
+        name=f"{NAME} ({name})",
+        model=MODEL,
+        manufacturer=MANUFACTURER,
+    )
+
     for description in get_sensor_descriptions():
         entities.append(
             KleenexSensor(
                 coordinator=coordinator,
                 entry_id=config_entry.entry_id,
                 description=description,
+                config_entry=config_entry,
+                device_info=device_info,
             )
         )
     async_add_entities(entities)
@@ -144,11 +159,14 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
         coordinator: PollenDataUpdateCoordinator,
         entry_id: str,
         description: SensorEntityDescription,
+        config_entry: ConfigEntry,
+        device_info: DeviceInfo,
     ) -> None:
         super().__init__(coordinator)
-        self.entity_description = description
+        self._config_entry = config_entry
         self._attr_unique_id = f"{entry_id}-{NAME}{description.key}"
-        self._attr_device_info = coordinator.device_info
+        self._attr_device_info = device_info
+        self.entity_description = description
 
     @property
     def native_value(self) -> StateType:
@@ -156,19 +174,19 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
         key = self.entity_description.key
         pollen = self.coordinator.data.get("pollen", {})
         current = pollen[0] if pollen else {}
+        if key in current:
+            if self.entity_description.native_unit_of_measurement is not None:
+                default_value = 0
+            else:
+                default_value = None
+            return current.get(key, default_value)
         if self.coordinator.data.get(key, None) is not None:
             return self.coordinator.data.get(key)
-        if key not in current:
-            return getattr(self.coordinator, key, None)
-        if self.entity_description.native_unit_of_measurement is not None:
-            default_value = 0
-        else:
-            default_value = None
-        value = current.get(key, default_value)
-        return value
+        return self._config_entry.data.get(key, None)
 
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
+        """Return the state attributes of the sensor."""
         key = self.entity_description.key
         data: dict[str, Any] = {}
         if key == "date":
