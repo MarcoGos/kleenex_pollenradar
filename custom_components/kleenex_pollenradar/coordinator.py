@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 import logging
 import asyncio
+from homeassistant import config_entries
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.core import HomeAssistant
 from .api import PollenApi
 from .const import (
@@ -20,7 +20,12 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 class PollenDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
 
-    def __init__(self, hass: HomeAssistant, api: PollenApi) -> None:
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        api: PollenApi,
+        config_entry: config_entries.ConfigEntry | None,
+    ) -> None:
         """Initialize."""
         self.api = api
         self.platforms: list[str] = []
@@ -31,6 +36,7 @@ class PollenDataUpdateCoordinator(DataUpdateCoordinator):
             _LOGGER,
             name=DOMAIN,
             update_interval=timedelta(seconds=DEFAULT_SYNC_INTERVAL),
+            config_entry=config_entry,
         )
 
     async def _async_update_data(self):
