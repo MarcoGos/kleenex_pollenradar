@@ -115,6 +115,18 @@
           "very-high": "Very High"
         }
       },
+      "detail_value": {
+        "name": "{name}"
+      },
+      "detail_level": {
+        "name": "{name} Level",
+        "state": {
+          "low": "Low",
+          "moderate": "Moderate",
+          "high": "High",
+          "very-high": "Very High"
+        }
+      },
       "date": {
         "name": "Date",
         "state_attributes": {

@@ -115,6 +115,18 @@
           "very-high": "Molto alto"
         }
       },
+      "detail_value": {
+        "name": "{name}"
+      },
+      "detail_level": {
+        "name": "{name} livello",
+        "state": {
+          "low": "Basso",
+          "moderate": "Moderato",
+          "high": "Alto",
+          "very-high": "Molto alto"
+        }
+      },
       "date": {
         "name": "Data",
         "state_attributes": {

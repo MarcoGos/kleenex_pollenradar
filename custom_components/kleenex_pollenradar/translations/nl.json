@@ -115,6 +115,18 @@
           "very-high": "Zeer hoog"
         }
       },
+      "detail_value": {
+        "name": "{name}"
+      },
+      "detail_level": {
+        "name": "{name} niveau",
+        "state": {
+          "low": "Laag",
+          "moderate": "Gemiddeld",
+          "high": "Hoog",
+          "very-high": "Zeer hoog"
+        }
+      },
       "date": {
         "name": "Datum",
         "state_attributes": {

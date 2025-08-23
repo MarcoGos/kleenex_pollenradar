@@ -27,6 +27,15 @@
                     "high": "mdi:gauge",
                     "very-high": "mdi:gauge-full"
                 }
+            },
+            "detail_level": {
+                "default": "mdi:gauge-empty",
+                "state": {
+                    "low": "mdi:gauge-empty",
+                    "moderate": "mdi:gauge-low",
+                    "high": "mdi:gauge",
+                    "very-high": "mdi:gauge-full"
+                }
             }
         }
     }

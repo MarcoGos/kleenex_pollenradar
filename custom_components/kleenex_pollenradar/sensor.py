@@ -3,6 +3,7 @@
 import logging
 
 from collections.abc import Mapping
+from dataclasses import dataclass
 from typing import Any
 
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -17,14 +18,23 @@ from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntityDescription,
 )
-
 from .coordinator import PollenDataUpdateCoordinator
 from .const import DOMAIN, NAME, MODEL, MANUFACTURER, CONF_NAME
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
+@dataclass(kw_only=True, frozen=True)
+class KleenexDetailSensorEntityDescription(
+    SensorEntityDescription, frozen_or_thawed=True
+):
+    """Describes Kleenex detail sensor entity."""
+
+    group: str | None = None
+    pollen_type: str | None = None
+
+
+def get_sensor_descriptions() -> list[SensorEntityDescription]:
     """Return a list of sensor descriptions."""
     level_options = ["low", "moderate", "high", "very-high"]
     descriptions: list[SensorEntityDescription] = [
@@ -115,6 +125,95 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:  # type: ignore
     return descriptions
 
 
+def get_detail_sensor_descriptions(
+    pollen: list[dict[str, Any]],
+) -> list[KleenexDetailSensorEntityDescription]:  # type: ignore
+    """Return a list of detail sensor descriptions."""
+    level_options = ["low", "moderate", "high", "very-high"]
+    descriptions: list[KleenexDetailSensorEntityDescription] = []
+    for details in pollen[0].get("trees_details", []):
+        descriptions.append(
+            KleenexDetailSensorEntityDescription(
+                key="value",
+                pollen_type=details["name"],
+                translation_key="detail_value",
+                translation_placeholders={"name": details["name"]},
+                group="trees_details",
+                icon="mdi:tree-outline",
+                state_class="measurement",
+                native_unit_of_measurement="ppm",
+                entity_registry_enabled_default=False,
+            )
+        )
+        descriptions.append(
+            KleenexDetailSensorEntityDescription(
+                key="level",
+                pollen_type=details["name"],
+                translation_key="detail_level",
+                translation_placeholders={"name": details["name"]},
+                group="trees_details",
+                device_class=SensorDeviceClass.ENUM,
+                options=level_options,
+                entity_registry_enabled_default=False,
+            ),
+        )
+
+    for details in pollen[0].get("grass_details", []):
+        descriptions.append(
+            KleenexDetailSensorEntityDescription(
+                key="value",
+                pollen_type=details["name"],
+                translation_key=f"detail_value",
+                translation_placeholders={"name": details["name"]},
+                group="grass_details",
+                icon="mdi:grass",
+                state_class="measurement",
+                native_unit_of_measurement="ppm",
+                entity_registry_enabled_default=False,
+            )
+        )
+        descriptions.append(
+            KleenexDetailSensorEntityDescription(
+                key="level",
+                pollen_type=details["name"],
+                translation_key="detail_level",
+                translation_placeholders={"name": details["name"]},
+                group="grass_details",
+                device_class=SensorDeviceClass.ENUM,
+                options=level_options,
+                entity_registry_enabled_default=False,
+            ),
+        )
+
+    for details in pollen[0].get("weeds_details", []):
+        descriptions.append(
+            KleenexDetailSensorEntityDescription(
+                key="value",
+                pollen_type=details["name"],
+                group="weeds_details",
+                translation_key="detail_value",
+                translation_placeholders={"name": details["name"]},
+                icon="mdi:flower-pollen",
+                state_class="measurement",
+                native_unit_of_measurement="ppm",
+                entity_registry_enabled_default=False,
+            )
+        )
+        descriptions.append(
+            KleenexDetailSensorEntityDescription(
+                key="level",
+                pollen_type=details["name"],
+                group="weeds_details",
+                translation_key="detail_level",
+                translation_placeholders={"name": details["name"]},
+                device_class=SensorDeviceClass.ENUM,
+                options=level_options,
+                entity_registry_enabled_default=False,
+            ),
+        )
+    return descriptions
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     config_entry: ConfigEntry,
@@ -122,7 +221,8 @@ async def async_setup_entry(
 ) -> None:
     """Set up the sensor platform."""
     coordinator: PollenDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
-    entities: list[KleenexSensor] = []
+    entities = []
+    pollen = coordinator.data.get("pollen", {})
 
     latitude = config_entry.data.get(CONF_LATITUDE)
     longitude = config_entry.data.get(CONF_LONGITUDE)
@@ -139,6 +239,16 @@ async def async_setup_entry(
     for description in get_sensor_descriptions():
         entities.append(
             KleenexSensor(
+                coordinator=coordinator,
+                entry_id=config_entry.entry_id,
+                description=description,
+                config_entry=config_entry,
+                device_info=device_info,
+            )
+        )
+    for description in get_detail_sensor_descriptions(pollen):
+        entities.append(
+            KleenexDetailSensor(
                 coordinator=coordinator,
                 entry_id=config_entry.entry_id,
                 description=description,
@@ -212,5 +322,81 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
                 forecast_entry[mapping.get(data_key, data_key)] = pollen[day_offset][
                     data_key
                 ]
+            data["forecast"].append(forecast_entry)
+        return data
+
+
+class KleenexDetailSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity):
+    """Representation of a detail sensor."""
+
+    _attr_has_entity_name = True
+
+    entity_description: KleenexDetailSensorEntityDescription
+
+    def __init__(
+        self,
+        coordinator: PollenDataUpdateCoordinator,
+        entry_id: str,
+        description: KleenexDetailSensorEntityDescription,
+        config_entry: ConfigEntry,
+        device_info: DeviceInfo,
+    ) -> None:
+        super().__init__(coordinator)
+        self._config_entry = config_entry
+        self._attr_unique_id = f"{entry_id}-{NAME}{description.group}-{description.pollen_type}-{description.key}"
+        self._attr_device_info = device_info
+        self.entity_description = description
+
+    @property
+    def native_value(self) -> StateType:
+        """Return the state of the detail sensor."""
+        key = self.entity_description.key
+        pollen = self.coordinator.data.get("pollen", {})
+        if not pollen:
+            return None
+        current = pollen[0] if pollen else {}
+        details = (
+            current.get(f"{self.entity_description.group}", [])
+            if self.entity_description.group
+            else []
+        )
+        detail = [
+            item
+            for item in details
+            if item["name"] == self.entity_description.pollen_type
+        ]
+        if not detail:
+            return None
+        if key in detail[0]:
+            if self.entity_description.native_unit_of_measurement is not None:
+                default_value = 0
+            else:
+                default_value = None
+            return detail[0].get(key, default_value)
+
+    @property
+    def extra_state_attributes(self) -> Mapping[str, Any] | None:
+        """Return the state attributes of the detail sensor."""
+        data: dict[str, Any] = {}
+        key = self.entity_description.key
+        pollen_type = self.entity_description.pollen_type
+        group = self.entity_description.group
+        pollen = self.coordinator.data.get("pollen", {})
+        if not pollen:
+            return None
+        data["forecast"] = []
+        for day_offset in range(1, len(pollen)):
+            details = (
+                pollen[day_offset].get(f"{group}", [])
+                if self.entity_description.group
+                else []
+            )
+            detail = [item for item in details if item["name"] == pollen_type]
+            if not detail:
+                return None
+            value = detail[0].get(key, None)
+            forecast_entry: dict[str, Any] = {}
+            forecast_entry["date"] = pollen[day_offset]["date"]
+            forecast_entry[key] = value
             data["forecast"].append(forecast_entry)
         return data
