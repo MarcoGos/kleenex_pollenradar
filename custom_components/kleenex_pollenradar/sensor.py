@@ -285,11 +285,7 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
         pollen = self.coordinator.data.get("pollen", {})
         current = pollen[0] if pollen else {}
         if key in current:
-            if self.entity_description.native_unit_of_measurement is not None:
-                default_value = 0
-            else:
-                default_value = None
-            return current.get(key, default_value)
+            return current.get(key, None)
         if self.coordinator.data.get(key, None) is not None:
             return self.coordinator.data.get(key)
         return self._config_entry.data.get(key, None)
@@ -350,53 +346,47 @@ class KleenexDetailSensor(CoordinatorEntity[PollenDataUpdateCoordinator], Sensor
     @property
     def native_value(self) -> StateType:
         """Return the state of the detail sensor."""
-        key = self.entity_description.key
         pollen = self.coordinator.data.get("pollen", {})
         if not pollen:
             return None
-        current = pollen[0] if pollen else {}
-        details = (
-            current.get(f"{self.entity_description.group}", [])
-            if self.entity_description.group
-            else []
-        )
-        detail = [
-            item
-            for item in details
-            if item["name"] == self.entity_description.pollen_type
-        ]
-        if not detail:
-            return None
-        if key in detail[0]:
-            if self.entity_description.native_unit_of_measurement is not None:
-                default_value = 0
-            else:
-                default_value = None
-            return detail[0].get(key, default_value)
+        key = self.entity_description.key
+        pollen_type = self.entity_description.pollen_type
+        group = self.entity_description.group
+        return self.__get_detail_value(pollen, 0, group, pollen_type, key)
 
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
         """Return the state attributes of the detail sensor."""
+        pollen = self.coordinator.data.get("pollen", {})
+        if not pollen:
+            return None
         data: dict[str, Any] = {}
         key = self.entity_description.key
         pollen_type = self.entity_description.pollen_type
         group = self.entity_description.group
-        pollen = self.coordinator.data.get("pollen", {})
-        if not pollen:
-            return None
         data["forecast"] = []
         for day_offset in range(1, len(pollen)):
-            details = (
-                pollen[day_offset].get(f"{group}", [])
-                if self.entity_description.group
-                else []
+            data["forecast"].append(
+                {
+                    "date": pollen[day_offset]["date"],
+                    key: self.__get_detail_value(
+                        pollen, day_offset, group, pollen_type, key
+                    ),
+                }
             )
-            detail = [item for item in details if item["name"] == pollen_type]
-            if not detail:
-                return None
-            value = detail[0].get(key, None)
-            forecast_entry: dict[str, Any] = {}
-            forecast_entry["date"] = pollen[day_offset]["date"]
-            forecast_entry[key] = value
-            data["forecast"].append(forecast_entry)
         return data
+
+    def __get_detail_value(
+        self,
+        pollen: list[dict[str, Any]],
+        day_offset: int,
+        group: str | None,
+        pollen_type: str | None,
+        key: str,
+    ) -> Any:
+        details = pollen[day_offset].get(group, []) if group else []
+        detail = [item for item in details if item["name"] == pollen_type]
+        if not detail:
+            return None
+        value = detail[0].get(key, None)
+        return value
