@@ -8,7 +8,7 @@ import async_timeout
 
 from homeassistant.exceptions import HomeAssistantError
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from .const import DOMAIN, REGIONS
 
 TIMEOUT = 10
@@ -93,43 +93,48 @@ class PollenApi:
         results = soup.find_all("button", class_="day-link")
         if results:
             self._pollen = []
-        for day in results:
-            day_no = int(day.select("span.day-number")[0].contents[0])  # type: ignore
+        tag_results = [el for el in results if isinstance(el, Tag)]
+        for day in tag_results:
+            day_no = int(day.select_one("span.day-number").contents[0])  # type: ignore
             pollen_date = self.__determine_pollen_date(day_no)
             pollen: dict[str, Any] = {
                 "day": day_no,
                 "date": pollen_date,
             }
-            pollen["pollen_type"] = {}
             for pollen_type in self._pollen_types:
-                pollen_count, unit_of_measure = day.get(  # type: ignore
-                    f"data-{pollen_type}-count", "0 PPM"
-                ).split(" ")  # type: ignore
+                count_unit = day.get(f"data-{pollen_type}-count", "0 PPM")
                 try:
+                    pollen_count, unit_of_measure = count_unit.split(" ")  # type: ignore
                     pollen[pollen_type] = int(pollen_count)
-                except ValueError:
+                except (ValueError, AttributeError):
                     pollen[pollen_type] = 0
-                pollen_level = day.get(f"data-{pollen_type}", "")  # type: ignore
-                if pollen_level == "":
-                    pollen_level = self.determine_level_by_count(
-                        pollen_type, pollen[pollen_type]
-                    )
+                    unit_of_measure = "ppm"
+                pollen_level = day.get(
+                    f"data-{pollen_type}", ""
+                ) or self.determine_level_by_count(pollen_type, pollen[pollen_type])
                 pollen[f"{pollen_type}_level"] = pollen_level
                 pollen[f"{pollen_type}_unit_of_measure"] = unit_of_measure.lower()
                 pollen[f"{pollen_type}_details"] = []
 
                 pollen_detail_type = self._pollen_detail_types[pollen_type]
-                pollen_details = day.get(f"data-{pollen_detail_type}-detail", "").split(  # type: ignore
-                    "|"
-                )
-                for item in pollen_details:
-                    sub_items = item.split(",")
-                    pollen_detail = {
-                        "name": sub_items[0],
-                        "value": int(sub_items[1]),
-                        "level": sub_items[2],
-                    }
-                    pollen[f"{pollen_type}_details"].append(pollen_detail)
+                pollen_details_str = day.get(f"data-{pollen_detail_type}-detail", "")
+                if pollen_details_str:
+                    for item in pollen_details_str.split("|"):  # type: ignore
+                        sub_items = item.split(",")
+                        if len(sub_items) == 3:
+                            try:
+                                pollen_detail = {
+                                    "name": sub_items[0],
+                                    "value": int(sub_items[1]),
+                                    "level": sub_items[2],
+                                }
+                            except ValueError:
+                                pollen_detail = {
+                                    "name": sub_items[0],
+                                    "value": 0,
+                                    "level": sub_items[2],
+                                }
+                            pollen[f"{pollen_type}_details"].append(pollen_detail)
             self._pollen.append(pollen)
 
     def get_raw_data(self) -> str:
