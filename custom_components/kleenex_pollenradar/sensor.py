@@ -25,9 +25,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 @dataclass(kw_only=True, frozen=True)
-class KleenexDetailSensorEntityDescription(
-    SensorEntityDescription, frozen_or_thawed=True
-):
+class KleenexDetailSensorEntityDescription(SensorEntityDescription):
     """Describes Kleenex detail sensor entity."""
 
     group: str | None = None
@@ -38,45 +36,29 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:
     """Return a list of sensor descriptions."""
     level_options = ["low", "moderate", "high", "very-high"]
     descriptions: list[SensorEntityDescription] = [
-        SensorEntityDescription(
-            key="trees",
-            translation_key="trees",
-            icon="mdi:tree-outline",
-            state_class="measurement",
-            native_unit_of_measurement="ppm",
-        ),
-        SensorEntityDescription(
-            key="trees_level",
-            translation_key="trees_level",
-            device_class=SensorDeviceClass.ENUM,
-            options=level_options,
-        ),
-        SensorEntityDescription(
-            key="grass",
-            translation_key="grass",
-            icon="mdi:grass",
-            state_class="measurement",
-            native_unit_of_measurement="ppm",
-        ),
-        SensorEntityDescription(
-            key="grass_level",
-            translation_key="grass_level",
-            device_class=SensorDeviceClass.ENUM,
-            options=level_options,
-        ),
-        SensorEntityDescription(
-            key="weeds",
-            translation_key="weeds",
-            icon="mdi:flower-pollen",
-            state_class="measurement",
-            native_unit_of_measurement="ppm",
-        ),
-        SensorEntityDescription(
-            key="weeds_level",
-            translation_key="weeds_level",
-            device_class=SensorDeviceClass.ENUM,
-            options=level_options,
-        ),
+        *[
+            SensorEntityDescription(
+                key=key,
+                translation_key=key,
+                icon=icon,
+                state_class="measurement",
+                native_unit_of_measurement="ppm",
+            )
+            for key, icon in [
+                ("trees", "mdi:tree-outline"),
+                ("grass", "mdi:grass"),
+                ("weeds", "mdi:flower-pollen"),
+            ]
+        ],
+        *[
+            SensorEntityDescription(
+                key=key,
+                translation_key=key,
+                device_class=SensorDeviceClass.ENUM,
+                options=level_options,
+            )
+            for key in ["trees_level", "grass_level", "weeds_level"]
+        ],
         SensorEntityDescription(
             key="date",
             translation_key="date",
@@ -127,90 +109,40 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:
 
 def get_detail_sensor_descriptions(
     pollen: list[dict[str, Any]],
-) -> list[KleenexDetailSensorEntityDescription]:  # type: ignore
+) -> list[KleenexDetailSensorEntityDescription]:
     """Return a list of detail sensor descriptions."""
-    level_options = ["low", "moderate", "high", "very-high"]
     descriptions: list[KleenexDetailSensorEntityDescription] = []
-    for details in pollen[0].get("trees_details", []):
-        descriptions.append(
-            KleenexDetailSensorEntityDescription(
-                key="value",
-                pollen_type=details["name"],
-                translation_key="detail_value",
-                translation_placeholders={"name": details["name"]},
-                group="trees_details",
-                icon="mdi:tree-outline",
-                state_class="measurement",
-                native_unit_of_measurement="ppm",
-                entity_registry_enabled_default=False,
+    for group, icon in [
+        ("trees_details", "mdi:tree-outline"),
+        ("grass_details", "mdi:grass"),
+        ("weeds_details", "mdi:flower-pollen"),
+    ]:
+        for details in pollen[0].get(group, []):
+            descriptions.append(
+                KleenexDetailSensorEntityDescription(
+                    key="value",
+                    pollen_type=details["name"],
+                    translation_key="detail_value",
+                    translation_placeholders={"name": details["name"]},
+                    group=group,
+                    icon=icon,
+                    state_class="measurement",
+                    native_unit_of_measurement="ppm",
+                    entity_registry_enabled_default=False,
+                )
             )
-        )
-        descriptions.append(
-            KleenexDetailSensorEntityDescription(
-                key="level",
-                pollen_type=details["name"],
-                translation_key="detail_level",
-                translation_placeholders={"name": details["name"]},
-                group="trees_details",
-                device_class=SensorDeviceClass.ENUM,
-                options=level_options,
-                entity_registry_enabled_default=False,
-            ),
-        )
-
-    for details in pollen[0].get("grass_details", []):
-        descriptions.append(
-            KleenexDetailSensorEntityDescription(
-                key="value",
-                pollen_type=details["name"],
-                translation_key=f"detail_value",
-                translation_placeholders={"name": details["name"]},
-                group="grass_details",
-                icon="mdi:grass",
-                state_class="measurement",
-                native_unit_of_measurement="ppm",
-                entity_registry_enabled_default=False,
+            descriptions.append(
+                KleenexDetailSensorEntityDescription(
+                    key="level",
+                    pollen_type=details["name"],
+                    translation_key="detail_level",
+                    translation_placeholders={"name": details["name"]},
+                    group=group,
+                    device_class=SensorDeviceClass.ENUM,
+                    options=["low", "moderate", "high", "very-high"],
+                    entity_registry_enabled_default=False,
+                ),
             )
-        )
-        descriptions.append(
-            KleenexDetailSensorEntityDescription(
-                key="level",
-                pollen_type=details["name"],
-                translation_key="detail_level",
-                translation_placeholders={"name": details["name"]},
-                group="grass_details",
-                device_class=SensorDeviceClass.ENUM,
-                options=level_options,
-                entity_registry_enabled_default=False,
-            ),
-        )
-
-    for details in pollen[0].get("weeds_details", []):
-        descriptions.append(
-            KleenexDetailSensorEntityDescription(
-                key="value",
-                pollen_type=details["name"],
-                group="weeds_details",
-                translation_key="detail_value",
-                translation_placeholders={"name": details["name"]},
-                icon="mdi:flower-pollen",
-                state_class="measurement",
-                native_unit_of_measurement="ppm",
-                entity_registry_enabled_default=False,
-            )
-        )
-        descriptions.append(
-            KleenexDetailSensorEntityDescription(
-                key="level",
-                pollen_type=details["name"],
-                group="weeds_details",
-                translation_key="detail_level",
-                translation_placeholders={"name": details["name"]},
-                device_class=SensorDeviceClass.ENUM,
-                options=level_options,
-                entity_registry_enabled_default=False,
-            ),
-        )
     return descriptions
 
 
