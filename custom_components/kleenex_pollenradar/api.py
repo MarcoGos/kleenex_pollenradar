@@ -1,6 +1,7 @@
 """Kleenex API"""
 
 from typing import Any
+import logging
 
 from datetime import datetime, date
 import aiohttp
@@ -13,6 +14,7 @@ from .const import DOMAIN, REGIONS
 
 TIMEOUT = 10
 
+_LOGGER: logging.Logger = logging.getLogger(__package__)
 
 class PollenApi:
     """Pollenradar API."""
@@ -56,21 +58,26 @@ class PollenApi:
 
     async def __request_by_latitude_longitude(self) -> bool:
         """Request data from the API using latitude and longitude."""
-        data = {"lat": self.latitude, "lng": self.longitude}
-        success = await self.__perform_request(self.__get_url_by_region(), data)
+        params = {"lat": self.latitude, "lng": self.longitude}
+        success = await self.__perform_request(self.__get_url_by_region(), params)
         return success
 
     def __get_url_by_region(self) -> str:
         """Get the URL for the API based on the region."""
         return REGIONS[self.region]["url"]
 
-    async def __perform_request(self, url: str, data: Any) -> bool:
+    async def __perform_request(self, url: str, params: Any) -> bool:
         """Perform the request to the API."""
         try:
             async with async_timeout.timeout(TIMEOUT):
-                response = await self._session.post(
-                    url=url, data=data, headers=self._headers, ssl=False
-                )
+                if REGIONS[self.region]["method"] == "get":
+                    response = await self._session.get(
+                        url=url, params=params, headers=self._headers, ssl=False
+                    )
+                else:
+                    response = await self._session.post(
+                        url=url, data=params, headers=self._headers, ssl=False
+                    )
                 if response.ok:
                     self._raw_data = await response.text()
                 return response.ok

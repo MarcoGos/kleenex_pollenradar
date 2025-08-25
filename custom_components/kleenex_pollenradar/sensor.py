@@ -193,7 +193,7 @@ async def async_setup_entry(
             device_info=device_info,
         )
         for description in get_detail_sensor_descriptions(pollen)
-    ]
+    ] if pollen else []
 
     async_add_entities(entities)
 
