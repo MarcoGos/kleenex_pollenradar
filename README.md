@@ -47,7 +47,7 @@ Finally a diagnostic sensor called Last Updated (Pollen) which contains the date
 
 Ronald v/d Brink created nice dashboard examples related to this integration. Please take a look at [vdbrink]
 
-Also check out Kristians pollen prognis card which supports the Kleenex pollen radar: [krissen]
+Also check out Kristians pollen prognosis card which supports the Kleenex pollen radar: [krissen]
 
 ## Disclaimer
 
