@@ -47,6 +47,8 @@ Finally a diagnostic sensor called Last Updated (Pollen) which contains the date
 
 Ronald v/d Brink created nice dashboard examples related to this integration. Please take a look at [vdbrink]
 
+Also check out Kristians pollen prognis card which supports the Kleenex pollen radar: [krissen]
+
 ## Disclaimer
 
 This Homeassistant integration uses an unofficial API client for the Kleenex/Scottex API and is not affiliated with, endorsed by, or associated with Kleenex/Scottex or any of its subsidiaries.
@@ -65,3 +67,4 @@ Use this integratiion at your own risk. Kleemex/Scottex may update or modify its
 [releases]: https://github.com/MarcoGos/kleenex_pollenradar/releases
 [stats]: https://img.shields.io/badge/dynamic/json?color=41BDF5&logo=home-assistant&label=integration%20usage&suffix=%20installs&cacheSeconds=15600&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.kleenex_pollenradar.total&style=for-the-badge
 [vdbrink]: https://vdbrink.github.io/homeassistant/homeassistant_hacs_kleenex
+[krissen]: https://github.com/krissen/pollenprognos-card
