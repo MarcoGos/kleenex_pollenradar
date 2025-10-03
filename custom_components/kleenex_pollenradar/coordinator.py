@@ -44,13 +44,18 @@ class PollenDataUpdateCoordinator(DataUpdateCoordinator):
         error = ""
         for attempt in range(1, RETRY_ATTEMPTS):
             try:
-                pollen = await self.api.async_get_data()
-                raw = self.api.get_raw_data()
+                data = await self.api.async_get_data()
+                pollen = data.get("pollen", {})
+                location = data.get("location", {})
+                raw = data.get("raw", {})
                 last_updated = datetime.now().replace(
                     tzinfo=ZoneInfo(self._hass.config.time_zone)
                 )
                 return {
                     "pollen": pollen,
+                    "city": location.get("city"),
+                    "latitude": location.get("latitude"),
+                    "longitude": location.get("longitude"),
                     "raw": raw,
                     "last_updated": last_updated,
                     "error": "",

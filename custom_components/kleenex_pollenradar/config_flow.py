@@ -121,7 +121,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             user_input[CONF_CITY] = self.city
             user_input[CONF_LATITUDE] = self.latitude
             user_input[CONF_LONGITUDE] = self.longitude
-            _LOGGER.warning("User input: %s", user_input)
             try:
                 session = async_get_clientsession(self.hass)
                 api = PollenApi(

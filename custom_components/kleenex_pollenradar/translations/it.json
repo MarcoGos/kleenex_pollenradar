@@ -31,7 +31,7 @@
         "title": "Città o CAP",
         "description": "Fornisci un nome di città o un codice postale",
         "data": {
-          "city": "Città"
+          "city": "Città o CAP"
         }
       },
       "final": {
@@ -44,7 +44,7 @@
         "data": {
           "latitude": "Latitudine",
           "longitude": "Longitudine",
-          "city": "Città"
+          "city": "Città o CAP"
         }
       }
     }
@@ -192,7 +192,7 @@
         "name": "Longitudine"
       },
       "city": {
-        "name": "Città"
+        "name": "Città/CAP"
       },
       "last_updated": {
         "name": "Ultimo aggiornamento"

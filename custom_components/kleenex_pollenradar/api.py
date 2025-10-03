@@ -32,6 +32,9 @@ class PollenApi:
         "weeds": "weed",
         "grass": "grass",
     }
+    _found_city: str = ""
+    _found_latitude: float = 0.0
+    _found_longitude: float = 0.0
 
     def __init__(
         self,
@@ -49,10 +52,18 @@ class PollenApi:
         self.longitude = longitude
         self.city = city
 
-    async def async_get_data(self) -> list[dict[str, Any]]:
+    async def async_get_data(self) -> dict[str, Any]:
         """Get data from the API."""
         await self.refresh_data()
-        return self._pollen
+        return {
+            "pollen": self._pollen,
+            "location": {
+                "latitude": self._found_latitude,
+                "longitude": self._found_longitude,
+                "city": self._found_city,
+            },
+            "raw": self._raw_data,
+        }
 
     async def refresh_data(self):
         """Refresh data from the API."""
@@ -111,6 +122,9 @@ class PollenApi:
     def __decode_raw_data(self):
         """Decode the raw data from the API."""
         soup = BeautifulSoup(self._raw_data, "html.parser")
+
+        self.__extract_location_data(soup)
+
         results = soup.find_all("button", class_="day-link")
         if results:
             self._pollen = []
@@ -158,13 +172,25 @@ class PollenApi:
                             pollen[f"{pollen_type}_details"].append(pollen_detail)
             self._pollen.append(pollen)
 
-    def get_raw_data(self) -> str:
-        """Get the raw data from the API."""
-        return self._raw_data
+    def __extract_location_data(self, soup: BeautifulSoup) -> None:
+        """Extract latitude and longitude from the soup."""
+        self._found_city = self.__get_location_str("cityName", soup)
+        self._found_latitude = self.__get_location_float("pollenlat", soup)
+        self._found_longitude = self.__get_location_float("pollenlng", soup)
 
-    def get_pollen_info(self) -> list[dict[str, Any]]:
-        """Get the pollen information."""
-        return self._pollen
+    def __get_location_str(self, key: str, soup: BeautifulSoup) -> str:
+        """Get a location value from the raw data."""
+        result = soup.find("input", id=key)
+        return result.get("value", "") if result else ""  # type: ignore
+
+    def __get_location_float(self, key: str, soup: BeautifulSoup) -> float:
+        """Get a location value from the raw data."""
+        result = soup.find("input", id=key)
+        value = result.get("value", None) if result else None  # type: ignore
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return 0.0
 
     def __determine_pollen_date(self, day_no: int) -> date:
         """Determine the date of the pollen data."""

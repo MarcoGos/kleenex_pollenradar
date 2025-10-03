@@ -28,10 +28,10 @@
         }
       },
       "city": {
-        "title": "Plaats of Postcode",
+        "title": "Plaats of postcode",
         "description": "Geef een plaatsnaam of postcode op",
         "data": {
-          "city": "Plaats"
+          "city": "Plaats of postcode"
         }
       },
       "final": {
@@ -44,7 +44,7 @@
         "data": {
           "latitude": "Breedtegraad",
           "longitude": "Lengtegraad",
-          "city": "Plaats"
+          "city": "Plaats of postcode"
         }
       }
     }
@@ -192,7 +192,7 @@
         "name": "Lengtegraad"
       },
       "city": {
-        "name": "Plaats"
+        "name": "Plaats/Postcode"
       },
       "last_updated": {
         "name": "Laatst bijgewerkt"

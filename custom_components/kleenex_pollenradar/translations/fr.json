@@ -31,7 +31,7 @@
         "title": "Ville ou Code Postal",
         "description": "Fournir un nom de ville ou un code postal",
         "data": {
-          "city": "Ville"
+          "city": "Ville ou Code Postal"
         }
       },
       "final": {
@@ -44,7 +44,7 @@
         "data": {
           "latitude": "Latitude",
           "longitude": "Longitude",
-          "city": "Ville"
+          "city": "Ville ou Code Postal"
         }
       }
     }
@@ -192,7 +192,7 @@
         "name": "Longitude"
       },
       "city": {
-        "name": "Ville"
+        "name": "Ville/Code Postal"
       },
       "last_updated": {
         "name": "Dernière mise à jour"

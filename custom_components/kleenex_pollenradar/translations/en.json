@@ -31,7 +31,7 @@
         "title": "City or Postcode",
         "description": "Provide a city name or postcode",
         "data": {
-          "city": "City"
+          "city": "City or Postcode"
         }
       },
       "final": {
@@ -44,7 +44,7 @@
         "data": {
           "latitude": "Latitude",
           "longitude": "Longitude",
-          "city": "City"
+          "city": "City or Postcode"
         }
       }
     }
@@ -192,7 +192,7 @@
         "name": "Longitude"
       },
       "city": {
-        "name": "City"
+        "name": "City/Postcode"
       },
       "last_updated": {
         "name": "Last updated"
