@@ -17,9 +17,7 @@ Via HACS:
 
 ## Setup
 
-During the setup of the integration a region, name, latitude and longitude needs to be provided.
-
-![Setup](/assets/setup.png)
+During the setup of the integration a region, name, city or latitude and longitude needs to be provided.
 
 ## What to expect
 
@@ -39,8 +37,6 @@ The tree/grass/weeds pollen sensors have additional attributes for the forecast 
 
 The sensor information is updated every hour although the values on the Kleenex pollen radar website are usually updated every 3 hours.
 
-![Sensors](/assets/sensors.png)
-
 Finally a diagnostic sensor called Last Updated (Pollen) which contains the date and time of the last update.
 
 ## Dashboard examples
@@ -48,6 +44,16 @@ Finally a diagnostic sensor called Last Updated (Pollen) which contains the date
 Ronald v/d Brink created nice dashboard examples related to this integration. Please take a look at [vdbrink]
 
 Also check out Kristians pollen prognosis card which supports the Kleenex pollen radar: [krissen]
+
+## Trouble shooting
+
+If the Kleenex integration raises errors then first have a look at the Kleenex/Scottex website and check the pollen radar there:
+
+- For France: https://www.kleenex.fr/alertes-pollens
+- For Italy: https://www.it.scottex.com/allerta-pollini/previsioni-dei-pollini
+- For Netherlands: https://www.kleenex.nl/pollenradar
+- For UK: https://www.kleenex.co.uk/pollen-count
+- For USA: https://www.kleenex.com/en-us/pollen-count [^1]
 
 ## Disclaimer
 
@@ -68,3 +74,5 @@ Use this integratiion at your own risk. Kleemex/Scottex may update or modify its
 [stats]: https://img.shields.io/badge/dynamic/json?color=41BDF5&logo=home-assistant&label=integration%20usage&suffix=%20installs&cacheSeconds=15600&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.kleenex_pollenradar.total&style=for-the-badge
 [vdbrink]: https://vdbrink.github.io/homeassistant/homeassistant_hacs_kleenex
 [krissen]: https://github.com/krissen/pollenprognos-card
+
+[^1]: The USA version of the Kleenex pollen radar uses a different version of the API, which is incompatible with the integration. This integration uses an older version of the Kleenex/Scottex API. As a result, the pollen values shown in Home Assistant may differ from those displayed on the official website.

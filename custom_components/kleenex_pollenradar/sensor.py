@@ -88,6 +88,13 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:
             entity_registry_enabled_default=False,
         ),
         SensorEntityDescription(
+            key="city",
+            translation_key="city",
+            icon="mdi:city",
+            entity_category=EntityCategory.DIAGNOSTIC,
+            entity_registry_enabled_default=False,
+        ),
+        SensorEntityDescription(
             key="region",
             translation_key="region",
             icon="mdi:earth",
@@ -163,37 +170,40 @@ async def async_setup_entry(
     coordinator: PollenDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     pollen = coordinator.data.get("pollen", {})
 
-    latitude = config_entry.data.get(CONF_LATITUDE)
-    longitude = config_entry.data.get(CONF_LONGITUDE)
     name = config_entry.data.get(CONF_NAME)
 
     device_info = DeviceInfo(
         entry_type=DeviceEntryType.SERVICE,
-        identifiers={(DOMAIN, f"{latitude}x{longitude}")},
+        identifiers={(DOMAIN, f"{name}")},
         name=f"{NAME} ({name})",
         model=MODEL,
         manufacturer=MANUFACTURER,
     )
 
-    entities = [
-        KleenexSensor(
-            coordinator=coordinator,
-            entry_id=config_entry.entry_id,
-            description=description,
-            config_entry=config_entry,
-            device_info=device_info,
-        )
-        for description in get_sensor_descriptions()
-    ] + [
-        KleenexDetailSensor(
-            coordinator=coordinator,
-            entry_id=config_entry.entry_id,
-            description=description,
-            config_entry=config_entry,
-            device_info=device_info,
-        )
-        for description in get_detail_sensor_descriptions(pollen)
-    ] if pollen else []
+    entities = (
+        [
+            KleenexSensor(
+                coordinator=coordinator,
+                entry_id=config_entry.entry_id,
+                description=description,
+                config_entry=config_entry,
+                device_info=device_info,
+            )
+            for description in get_sensor_descriptions()
+        ]
+        + [
+            KleenexDetailSensor(
+                coordinator=coordinator,
+                entry_id=config_entry.entry_id,
+                description=description,
+                config_entry=config_entry,
+                device_info=device_info,
+            )
+            for description in get_detail_sensor_descriptions(pollen)
+        ]
+        if pollen
+        else []
+    )
 
     async_add_entities(entities)
 

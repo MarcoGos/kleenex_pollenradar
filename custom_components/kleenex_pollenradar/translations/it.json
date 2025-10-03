@@ -11,18 +11,58 @@
     },
     "step": {
       "user": {
+        "title": "Regione e nome",
+        "description": "Seleziona la tua regione e fornisci un nome per questa istanza",
         "data": {
           "region": "Regione",
-          "latitude": "Latitudine",
-          "longitude": "Longitudine",
+          "get_content_by": "Ottieni informazioni tramite",
           "name": "Nome"
         }
       },
-      "reconfigure": {
+      "lat_lng": {
+        "title": "Latitudine e Longitudine",
+        "description": "Fornisci le coordinate di latitudine e longitudine",
         "data": {
           "latitude": "Latitudine",
           "longitude": "Longitudine"
         }
+      },
+      "city": {
+        "title": "Città o CAP",
+        "description": "Fornisci un nome di città o un codice postale",
+        "data": {
+          "city": "Città"
+        }
+      },
+      "final": {
+        "title": "Convalida",
+        "description": "Per favore aspetta mentre convalidiamo le tue informazioni"
+      },
+      "reconfigure": {
+        "title": "Riconfigurare",
+        "description": "Modifica le informazioni sulla tua posizione",
+        "data": {
+          "latitude": "Latitudine",
+          "longitude": "Longitudine",
+          "city": "Città"
+        }
+      }
+    }
+  },
+  "selector": {
+    "region": {
+      "options": {
+        "fr": "Francia",
+        "it": "Italia",
+        "nl": "Paesi Bassi",
+        "uk": "Gran Bretagna",
+        "us": "Stati Uniti"
+      }
+    },
+    "get_content_by": {
+      "options": {
+        "city": "Città",
+        "lat_lng": "Latitudine e Longitudine"
       }
     }
   },
@@ -150,6 +190,9 @@
       },
       "longitude": {
         "name": "Longitudine"
+      },
+      "city": {
+        "name": "Città"
       },
       "last_updated": {
         "name": "Ultimo aggiornamento"

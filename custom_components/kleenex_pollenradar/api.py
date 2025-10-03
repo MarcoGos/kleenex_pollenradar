@@ -10,11 +10,12 @@ import async_timeout
 from homeassistant.exceptions import HomeAssistantError
 
 from bs4 import BeautifulSoup, Tag
-from .const import DOMAIN, REGIONS
+from .const import DOMAIN, REGIONS, GetContentBy, METHODS
 
 TIMEOUT = 10
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
+
 
 class PollenApi:
     """Pollenradar API."""
@@ -35,14 +36,18 @@ class PollenApi:
     def __init__(
         self,
         session: aiohttp.ClientSession,
-        region: str = "",
+        region: str,
+        get_content_by: GetContentBy,
         latitude: float = 0,
         longitude: float = 0,
+        city: str = "",
     ) -> None:
         self._session = session
         self.region = region
+        self.get_content_by = get_content_by
         self.latitude = latitude
         self.longitude = longitude
+        self.city = city
 
     async def async_get_data(self) -> list[dict[str, Any]]:
         """Get data from the API."""
@@ -51,20 +56,29 @@ class PollenApi:
 
     async def refresh_data(self):
         """Refresh data from the API."""
-        if self.latitude != 0 and self.longitude != 0:
-            success = await self.__request_by_latitude_longitude()
+        if (self.latitude != 0 and self.longitude != 0) or self.city:
+            success = await self.__request_data()
             if success:
                 self.__decode_raw_data()
 
-    async def __request_by_latitude_longitude(self) -> bool:
+    async def __request_data(self) -> bool:
         """Request data from the API using latitude and longitude."""
-        params = {"lat": self.latitude, "lng": self.longitude}
-        success = await self.__perform_request(self.__get_url_by_region(), params)
+        if self.get_content_by == GetContentBy.LAT_LNG:
+            params = {"lat": self.latitude, "lng": self.longitude}
+        else:
+            params = {"city": self.city}
+        url = self.__get_url_by_region()
+        _LOGGER.debug("Requesting data from URL: %s with params: %s", url, params)
+        success = await self.__perform_request(url, params)
         return success
 
     def __get_url_by_region(self) -> str:
         """Get the URL for the API based on the region."""
-        return REGIONS[self.region]["url"]
+        return f"{REGIONS[self.region]['url']}{self.__get_url_page()}"
+
+    def __get_url_page(self) -> str:
+        """Get the URL for the page based on the region."""
+        return METHODS[self.get_content_by]
 
     async def __perform_request(self, url: str, params: Any) -> bool:
         """Perform the request to the API."""

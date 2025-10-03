@@ -9,7 +9,14 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.const import CONF_LATITUDE, CONF_LONGITUDE
 
 from .api import PollenApi
-from .const import DOMAIN, PLATFORMS, CONF_REGION
+from .const import (
+    DOMAIN,
+    PLATFORMS,
+    CONF_REGION,
+    CONF_GET_CONTENT_BY,
+    CONF_CITY,
+    GetContentBy,
+)
 from .coordinator import PollenDataUpdateCoordinator
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
@@ -24,8 +31,12 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     api = PollenApi(
         session=session,
         region=config_entry.data[CONF_REGION],
+        get_content_by=GetContentBy(
+            config_entry.data.get(CONF_GET_CONTENT_BY, GetContentBy.LAT_LNG.value)
+        ),
         latitude=config_entry.data[CONF_LATITUDE],
         longitude=config_entry.data[CONF_LONGITUDE],
+        city=config_entry.data.get(CONF_CITY, ""),
     )
 
     hass.data[DOMAIN][config_entry.entry_id] = coordinator = (

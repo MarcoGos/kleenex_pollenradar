@@ -11,18 +11,58 @@
     },
     "step": {
       "user": {
+        "title": "Region and name",
+        "description": "Select your region and provide a name for this instance",
         "data": {
           "region": "Region",
-          "latitude": "Latitude",
-          "longitude": "Longitude",
+          "get_content_by": "Get information by",
           "name": "Name"
         }
       },
-      "reconfigure": {
+      "lat_lng": {
+        "title": "Latitude and Longitude",
+        "description": "Provide latitude and longitude coordinates",
         "data": {
           "latitude": "Latitude",
           "longitude": "Longitude"
         }
+      },
+      "city": {
+        "title": "City or Postcode",
+        "description": "Provide a city name or postcode",
+        "data": {
+          "city": "City"
+        }
+      },
+      "final": {
+        "title": "Validating",
+        "description": "Please wait while we validate your information"
+      },
+      "reconfigure": {
+        "title": "Reconfigure",
+        "description": "Modify your location information",
+        "data": {
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "city": "City"
+        }
+      }
+    }
+  },
+  "selector": {
+    "region": {
+      "options": {
+        "fr": "France",
+        "it": "Italy",
+        "nl": "The Netherlands",
+        "uk": "Great Britain",
+        "us": "United States of America"
+      }
+    },
+    "get_content_by": {
+      "options": {
+        "city": "City or Postcode",
+        "lat_lng": "Latitude and Longitude"
       }
     }
   },
@@ -150,6 +190,9 @@
       },
       "longitude": {
         "name": "Longitude"
+      },
+      "city": {
+        "name": "City"
       },
       "last_updated": {
         "name": "Last updated"

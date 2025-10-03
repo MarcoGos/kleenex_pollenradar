@@ -11,18 +11,58 @@
     },
     "step": {
       "user": {
+        "title": "Regio en naam",
+        "description": "Selecteer je regio en geef een naam op voor deze instantie",
         "data": {
           "region": "Regio",
-          "name": "Naam",
+          "get_content_by": "Informatie verkrijgen via",
+          "name": "Naam"
+        }
+      },
+      "lat_lng": {
+        "title": "Breedte- en lengtegraad",
+        "description": "Geef breedte- en lengtegraad coördinaten op",
+        "data": {
           "latitude": "Breedtegraad",
           "longitude": "Lengtegraad"
         }
       },
+      "city": {
+        "title": "Plaats of Postcode",
+        "description": "Geef een plaatsnaam of postcode op",
+        "data": {
+          "city": "Plaats"
+        }
+      },
+      "final": {
+        "title": "Valideren",
+        "description": "Even geduld terwijl we je gegevens valideren"
+      },
       "reconfigure": {
+        "title": "Herconfigureren",
+        "description": "Pas je locatiegegevens aan",
         "data": {
           "latitude": "Breedtegraad",
-          "longitude": "Lengtegraad"
+          "longitude": "Lengtegraad",
+          "city": "Plaats"
         }
+      }
+    }
+  },
+  "selector": {
+    "region": {
+      "options": {
+        "fr": "Frankrijk",
+        "it": "Italië",
+        "nl": "Nederland",
+        "uk": "Groot-Brittannië",
+        "us": "Verenigde Staten van Amerika"
+      }
+    },
+    "get_content_by": {
+      "options": {
+        "city": "Plaats",
+        "lat_lng": "Breedte- en lengtegraad"
       }
     }
   },
@@ -150,6 +190,9 @@
       },
       "longitude": {
         "name": "Lengtegraad"
+      },
+      "city": {
+        "name": "Plaats"
       },
       "last_updated": {
         "name": "Laatst bijgewerkt"
