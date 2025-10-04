@@ -131,7 +131,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     longitude=self.longitude,
                     city=self.city,
                 )
-                if not await api.async_get_data():
+                data = await api.async_get_data()
+                if not data or not data.get("pollen"):
                     raise InvalidAuth
             except InvalidAuth:
                 errors["base"] = "invalid_auth"
@@ -167,7 +168,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     longitude=user_input.get(CONF_LONGITUDE, 0.0),
                     city=user_input.get(CONF_CITY, ""),
                 )
-                if not await api.async_get_data():
+                data = await api.async_get_data()
+                if not data or not data.get("pollen"):
                     raise InvalidAuth
             except InvalidAuth:
                 errors["base"] = "invalid_auth"
@@ -208,7 +210,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if (
             entry
-            and GetContentBy(entry.data[CONF_GET_CONTENT_BY]) == GetContentBy.LAT_LNG
+            and GetContentBy(entry.data.get(CONF_GET_CONTENT_BY, GetContentBy.LAT_LNG))
+            == GetContentBy.LAT_LNG
         ):
             data_schema = vol.Schema(
                 {
