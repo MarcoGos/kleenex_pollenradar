@@ -211,7 +211,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if (
             entry
-            and GetContentBy(entry.data[CONF_GET_CONTENT_BY]) == GetContentBy.LAT_LNG
+            and GetContentBy(entry.data.get(CONF_GET_CONTENT_BY, GetContentBy.LAT_LNG)) == GetContentBy.LAT_LNG
         ):
             data_schema = vol.Schema(
                 {
