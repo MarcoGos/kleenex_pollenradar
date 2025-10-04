@@ -48,7 +48,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self.region = user_input[CONF_REGION]
             self.name = user_input[CONF_NAME]
-            self.get_content_by = GetContentBy(user_input[CONF_GET_CONTENT_BY])
+            self.get_content_by = GetContentBy(user_input.get(CONF_GET_CONTENT_BY, None))
             if self.get_content_by == GetContentBy.CITY:
                 return await self.async_step_city()
             else:
@@ -159,10 +159,13 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None and entry:
             try:
                 session = async_get_clientsession(self.hass)
+                if CONF_LATITUDE not in user_input and CONF_LONGITUDE not in user_input and CONF_CITY not in user_input:
+                    user_input[CONF_LATITUDE] = self.hass.config.latitude
+                    user-input[CONF_LONGITUDE] = self.hass.config.longitude
                 api = PollenApi(
                     session=session,
                     region=entry.data[CONF_REGION],
-                    get_content_by=GetContentBy(entry.data[CONF_GET_CONTENT_BY]),
+                    get_content_by=GetContentBy(entry.data.get(CONF_GET_CONTENT_BY, GetContentBy.LAT_LNG),
                     latitude=user_input.get(CONF_LATITUDE, 0.0),
                     longitude=user_input.get(CONF_LONGITUDE, 0.0),
                     city=user_input.get(CONF_CITY, ""),
