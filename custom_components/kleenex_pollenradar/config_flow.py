@@ -161,7 +161,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 session = async_get_clientsession(self.hass)
                 if CONF_LATITUDE not in user_input and CONF_LONGITUDE not in user_input and CONF_CITY not in user_input:
                     user_input[CONF_LATITUDE] = self.hass.config.latitude
-                    user-input[CONF_LONGITUDE] = self.hass.config.longitude
+                    user_input[CONF_LONGITUDE] = self.hass.config.longitude
                 api = PollenApi(
                     session=session,
                     region=entry.data[CONF_REGION],
