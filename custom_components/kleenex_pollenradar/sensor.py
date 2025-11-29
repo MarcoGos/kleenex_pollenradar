@@ -248,8 +248,8 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
         """Return the state attributes of the sensor."""
         key = self.entity_description.key
-        if key == "date":
-            return {"raw": self.coordinator.data.get("raw")}
+        # if key == "date":
+        #     return {"raw": self.coordinator.data.get("raw")}
         if key not in {"trees", "grass", "weeds"}:
             return None
 

@@ -10,7 +10,7 @@ import async_timeout
 from homeassistant.exceptions import HomeAssistantError
 
 from bs4 import BeautifulSoup, Tag
-from .const import DOMAIN, REGIONS, GetContentBy, METHODS
+from .const import DOMAIN, REGIONS, GetContentBy, METHODS, Regions
 
 TIMEOUT = 10
 
@@ -24,7 +24,7 @@ class PollenApi:
         "User-Agent": "Home Assistant (kleenex_pollenradar)",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     }
-    _raw_data: str = ""
+    _raw_data: Any = ""
     _pollen: list[dict[str, Any]] = []
     _pollen_types = ("trees", "weeds", "grass")
     _pollen_detail_types: dict[str, str] = {
@@ -70,18 +70,26 @@ class PollenApi:
         if (self.latitude != 0 and self.longitude != 0) or self.city:
             success = await self.__request_data()
             if success:
-                self.__decode_raw_data()
+                if self.get_content_by == GetContentBy.CITY_ITALY:
+                    self.__decode_raw_data_italy()
+                else:
+                    self.__decode_raw_data()
 
     async def __request_data(self) -> bool:
         """Request data from the API using latitude and longitude."""
         if self.get_content_by == GetContentBy.LAT_LNG:
             params = {"lat": self.latitude, "lng": self.longitude}
         else:
-            params = {"city": self.city}
+            params = {
+                "city"
+                if self.get_content_by == GetContentBy.CITY
+                else "location": self.city
+            }
         url = self.__get_url_by_region()
         _LOGGER.debug("Requesting data from URL: %s with params: %s", url, params)
-        success = await self.__perform_request(url, params)
-        return success
+        data = await self.__perform_request(url, params)
+        self._raw_data = data
+        return data is not None
 
     def __get_url_by_region(self) -> str:
         """Get the URL for the API based on the region."""
@@ -91,7 +99,7 @@ class PollenApi:
         """Get the URL for the page based on the region."""
         return METHODS[self.get_content_by]
 
-    async def __perform_request(self, url: str, params: Any) -> bool:
+    async def __perform_request(self, url: str, params: Any) -> Any | None:
         """Perform the request to the API."""
         try:
             async with async_timeout.timeout(TIMEOUT):
@@ -104,8 +112,11 @@ class PollenApi:
                         url=url, data=params, headers=self._headers, ssl=False
                     )
                 if response.ok:
-                    self._raw_data = await response.text()
-                return response.ok
+                    if self.get_content_by == GetContentBy.CITY_ITALY:
+                        return await response.json()
+                    else:
+                        return await response.text()
+                return None
         except aiohttp.ClientConnectorDNSError as e:
             raise DNSError(
                 "dns_error",
@@ -172,11 +183,88 @@ class PollenApi:
                             pollen[f"{pollen_type}_details"].append(pollen_detail)
             self._pollen.append(pollen)
 
+    def __decode_raw_data_italy(self):
+        """Decode the raw data from the API for Italy."""
+        self.__extract_location_data_italy(self._raw_data.get("city", ""))
+        data = self._raw_data.get("html", "")
+        soup = BeautifulSoup(data, "html.parser")
+        day_infos = soup.find_all("button", class_="day-wrapper")
+        if day_infos:
+            self._pollen = []
+        for day_info in day_infos:
+            day_class = day_info.get("data-day-value", "day")
+            day_no = int(day_info.find("span", "forecast-date").contents[0])  # type: ignore
+            pollen_date = self.__determine_pollen_date(day_no)
+            pollen: dict[str, Any] = {
+                "day": day_no,
+                "date": pollen_date,
+            }
+            pollen_infos = soup.find_all("button", class_=day_class)
+            for pollen_info in pollen_infos:
+                pollen_type = str(pollen_info.get("data-show", ""))
+                if "-" in pollen_type:
+                    original_pollen_type = pollen_type.split("-")[0]
+                    pollen_type = original_pollen_type
+                    if pollen_type != "grass":
+                        pollen_type += "s"
+                    ppm_span = pollen_info.find("span", class_="number-text")
+                    if ppm_span:
+                        count_unit = ppm_span.text.strip()  # type: ignore
+                    else:
+                        count_unit = "0 PPM"
+                    try:
+                        pollen_count, unit_of_measure = count_unit.split(" ")  # type: ignore
+                        pollen[pollen_type] = int(pollen_count)
+                    except (ValueError, AttributeError):
+                        pollen[pollen_type] = 0
+                        unit_of_measure = "ppm"
+                    pollen_level = self.determine_level_by_count(
+                        pollen_type, pollen[pollen_type]
+                    )
+                    pollen[f"{pollen_type}_level"] = pollen_level
+                    pollen[f"{pollen_type}_unit_of_measure"] = unit_of_measure.lower()
+                    pollen[f"{pollen_type}_details"] = []
+                    pollen_analysis = soup.find(
+                        "div",
+                        class_=f"{original_pollen_type}-pollen-analysis-{day_class.replace('day', 'day-')}",
+                    )
+                    if pollen_analysis:
+                        detail_infos = pollen_analysis.find_all(
+                            "div", class_="table-details"
+                        )
+                        if detail_infos:
+                            for detail_info in detail_infos:
+                                name = (
+                                    detail_info.find("span", class_="name-text")
+                                    .contents[0]
+                                    .text
+                                )
+                                value = (
+                                    detail_info.find("span", class_="quality-text")
+                                    .contents[0]
+                                    .text.split(" ")
+                                )
+                                pollen_detail = {
+                                    "name": name,
+                                    "value": int(value[1]),
+                                    "level": value[0],
+                                }
+                                pollen[f"{pollen_type}_details"].append(pollen_detail)
+
+            self._pollen.append(pollen)
+
     def __extract_location_data(self, soup: BeautifulSoup) -> None:
         """Extract latitude and longitude from the soup."""
         self._found_city = self.__get_location_str("cityName", soup)
         self._found_latitude = self.__get_location_float("pollenlat", soup)
         self._found_longitude = self.__get_location_float("pollenlng", soup)
+
+    def __extract_location_data_italy(self, city_data: str) -> None:
+        """Extract latitude and longitude from the city data."""
+        city_info = city_data.split("|")
+        self._found_city = city_info[0] if len(city_info) > 0 else ""
+        self._found_latitude = float(city_info[1]) if len(city_info) > 1 else 0.0
+        self._found_longitude = float(city_info[2]) if len(city_info) > 2 else 0.0
 
     def __get_location_str(self, key: str, soup: BeautifulSoup) -> str:
         """Get a location value from the raw data."""

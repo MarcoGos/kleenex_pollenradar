@@ -15,8 +15,14 @@
         "description": "Sélectionnez votre région et fournissez un nom pour cette instance",
         "data": {
           "region": "Région",
-          "get_content_by": "Obtenir des informations par",
           "name": "Nom"
+        }
+      },
+      "content_by": {
+        "title": "Obtenir des informations par",
+        "description": "Sélectionnez comment vous souhaitez fournir vos informations de localisation",
+        "data": {
+          "get_content_by": "Obtenir des informations par"
         }
       },
       "lat_lng": {

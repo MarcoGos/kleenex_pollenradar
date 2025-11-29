@@ -15,8 +15,14 @@
         "description": "Seleziona la tua regione e fornisci un nome per questa istanza",
         "data": {
           "region": "Regione",
-          "get_content_by": "Ottieni informazioni tramite",
           "name": "Nome"
+        }
+      },
+      "content_by": {
+        "title": "Ottieni informazioni tramite",
+        "description": "Seleziona come desideri fornire le informazioni sulla tua posizione",
+        "data": {
+          "get_content_by": "Ottieni informazioni tramite"
         }
       },
       "lat_lng": {

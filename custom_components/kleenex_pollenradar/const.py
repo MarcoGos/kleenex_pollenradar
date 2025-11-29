@@ -13,28 +13,39 @@ PLATFORMS = [SENSOR]
 
 DEFAULT_SYNC_INTERVAL = 3600  # seconds
 
+
+class Regions(Enum):
+    """Supported regions."""
+
+    FRANCE = "fr"
+    ITALY = "it"
+    NETHERLANDS = "nl"
+    UNITED_KINGDOM = "uk"
+    UNITED_STATES = "us"
+
+
 REGIONS = {
-    "fr": {
+    Regions.FRANCE.value: {
         "name": "France",
         "url": "https://www.kleenex.fr/api/sitecore/Pollen/",
         "method": "get",
     },
-    "it": {
+    Regions.ITALY.value: {
         "name": "Italy",
         "url": "https://www.it.scottex.com/api/sitecore/Pollen/",
         "method": "post",
     },
-    "nl": {
+    Regions.NETHERLANDS.value: {
         "name": "Netherlands",
         "url": "https://www.kleenex.nl/api/sitecore/Pollen/",
         "method": "get",
     },
-    "uk": {
+    Regions.UNITED_KINGDOM.value: {
         "name": "United Kingdom",
         "url": "https://www.kleenex.co.uk/api/sitecore/Pollen/",
         "method": "get",
     },
-    "us": {
+    Regions.UNITED_STATES.value: {
         "name": "United States of America",
         "url": "https://www.kleenex.com/api/sitecore/Pollen/",
         "method": "get",
@@ -52,9 +63,11 @@ class GetContentBy(Enum):
 
     CITY = "city"
     LAT_LNG = "lat_lng"
+    CITY_ITALY = "city_italy"
 
 
 METHODS = {
     GetContentBy.CITY: "GetPollenContentCity",
     GetContentBy.LAT_LNG: "GetPollenContent",
+    GetContentBy.CITY_ITALY: "GetPollenData",
 }

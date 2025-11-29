@@ -22,6 +22,7 @@ from .const import (
     CONF_NAME,
     CONF_CITY,
     GetContentBy,
+    Regions,
 )
 from .api import PollenApi, DNSError
 
@@ -48,6 +49,30 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self.region = user_input[CONF_REGION]
             self.name = user_input[CONF_NAME]
+            if self.region == Regions.ITALY.value:
+                self.get_content_by = GetContentBy.CITY_ITALY
+                return await self.async_step_city()
+            else:
+                return await self.async_step_content_by()
+
+        data_schema = vol.Schema(
+            {
+                vol.Required(CONF_REGION): vol.In(
+                    {key: details["name"] for key, details in REGIONS.items()}
+                ),
+                vol.Required(CONF_NAME, default=self.hass.config.location_name): str,
+            }
+        )
+
+        return self.async_show_form(
+            step_id="user", data_schema=data_schema, errors=errors
+        )
+
+    async def async_step_content_by(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Handle the content by step."""
+        if user_input is not None:
             self.get_content_by = GetContentBy(user_input[CONF_GET_CONTENT_BY])
             if self.get_content_by == GetContentBy.CITY:
                 return await self.async_step_city()
@@ -56,10 +81,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         data_schema = vol.Schema(
             {
-                vol.Required(CONF_REGION): vol.In(
-                    {key: details["name"] for key, details in REGIONS.items()}
-                ),
-                vol.Required(CONF_NAME, default=self.hass.config.location_name): str,
                 vol.Required(CONF_GET_CONTENT_BY, default=GetContentBy.CITY): vol.In(
                     {
                         GetContentBy.CITY.value: "City",
@@ -68,20 +89,18 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ),
             }
         )
-
-        return self.async_show_form(
-            step_id="user", data_schema=data_schema, errors=errors
-        )
+        return self.async_show_form(step_id="content_by", data_schema=data_schema)
 
     async def async_step_lat_lng(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
+        """Handle the latitude / longitude step."""
         if user_input is not None:
             self.latitude = user_input[CONF_LATITUDE]
             self.longitude = user_input[CONF_LONGITUDE]
             return await self.async_step_final()
 
-        step_user_data_schema = vol.Schema(
+        data_schema = vol.Schema(
             {
                 vol.Required(
                     CONF_LATITUDE, default=self.hass.config.latitude
@@ -91,20 +110,19 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ): config_validation.longitude,
             }
         )
-        return self.async_show_form(
-            step_id="lat_lng", data_schema=step_user_data_schema
-        )
+        return self.async_show_form(step_id="lat_lng", data_schema=data_schema)
 
     async def async_step_city(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
+        """Handle the city step."""
         if user_input is not None:
             self.city = user_input[CONF_CITY]
             return await self.async_step_final()
 
-        step_user_data_schema = vol.Schema({vol.Required(CONF_CITY, default=""): str})
+        data_schema = vol.Schema({vol.Required(CONF_CITY, default=""): str})
 
-        return self.async_show_form(step_id="city", data_schema=step_user_data_schema)
+        return self.async_show_form(step_id="city", data_schema=data_schema)
 
     async def async_step_final(
         self, user_input: dict[str, Any] | None = None

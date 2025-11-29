@@ -15,8 +15,14 @@
         "description": "Selecteer je regio en geef een naam op voor deze instantie",
         "data": {
           "region": "Regio",
-          "get_content_by": "Informatie verkrijgen via",
           "name": "Naam"
+        }
+      },
+      "content_by": {
+        "title": "Informatie verkrijgen via",
+        "description": "Selecteer hoe je je locatiegegevens wilt opgeven",
+        "data": {
+          "get_content_by": "Informatie verkrijgen via"
         }
       },
       "lat_lng": {
