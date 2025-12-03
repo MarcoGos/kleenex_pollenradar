@@ -10,7 +10,7 @@ import async_timeout
 from homeassistant.exceptions import HomeAssistantError
 
 from bs4 import BeautifulSoup, Tag
-from .const import DOMAIN, REGIONS, GetContentBy, METHODS, Regions
+from .const import DOMAIN, REGIONS, GetContentBy, METHODS
 
 TIMEOUT = 10
 
@@ -21,7 +21,7 @@ class PollenApi:
     """Pollenradar API."""
 
     _headers: dict[str, str] = {
-        "User-Agent": "Home Assistant (kleenex_pollenradar)",
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.3",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     }
     _raw_data: Any = ""
@@ -111,6 +111,9 @@ class PollenApi:
                     response = await self._session.post(
                         url=url, data=params, headers=self._headers, ssl=False
                     )
+                if response.status == 403:
+                    _LOGGER.error("Access forbidden: 403 error from server")
+                    return None
                 if response.ok:
                     if self.get_content_by == GetContentBy.CITY_ITALY:
                         return await response.json()
