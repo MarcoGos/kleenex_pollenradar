@@ -15,28 +15,7 @@
         "description": "Sélectionnez votre région et fournissez un nom pour cette instance",
         "data": {
           "region": "Région",
-          "name": "Nom"
-        }
-      },
-      "content_by": {
-        "title": "Obtenir des informations par",
-        "description": "Sélectionnez comment vous souhaitez fournir vos informations de localisation",
-        "data": {
-          "get_content_by": "Obtenir des informations par"
-        }
-      },
-      "lat_lng": {
-        "title": "Latitude et Longitude",
-        "description": "Fournir les coordonnées de latitude et de longitude",
-        "data": {
-          "latitude": "Latitude",
-          "longitude": "Longitude"
-        }
-      },
-      "city": {
-        "title": "Ville ou Code Postal",
-        "description": "Fournir un nom de ville ou un code postal",
-        "data": {
+          "name": "Nom",
           "city": "Ville ou Code Postal"
         }
       },
@@ -48,8 +27,6 @@
         "title": "Reconfigurer",
         "description": "Modifier les informations de votre emplacement",
         "data": {
-          "latitude": "Latitude",
-          "longitude": "Longitude",
           "city": "Ville ou Code Postal"
         }
       }
@@ -67,8 +44,7 @@
     },
     "get_content_by": {
       "options": {
-        "city": "Ville",
-        "lat_lng": "Latitude et Longitude"
+        "city": "Ville"
       }
     }
   },

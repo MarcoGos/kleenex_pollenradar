@@ -15,28 +15,7 @@
         "description": "Selecteer je regio en geef een naam op voor deze instantie",
         "data": {
           "region": "Regio",
-          "name": "Naam"
-        }
-      },
-      "content_by": {
-        "title": "Informatie verkrijgen via",
-        "description": "Selecteer hoe je je locatiegegevens wilt opgeven",
-        "data": {
-          "get_content_by": "Informatie verkrijgen via"
-        }
-      },
-      "lat_lng": {
-        "title": "Breedte- en lengtegraad",
-        "description": "Geef breedte- en lengtegraad coördinaten op",
-        "data": {
-          "latitude": "Breedtegraad",
-          "longitude": "Lengtegraad"
-        }
-      },
-      "city": {
-        "title": "Plaats of postcode",
-        "description": "Geef een plaatsnaam of postcode op",
-        "data": {
+          "name": "Naam",
           "city": "Plaats of postcode"
         }
       },
@@ -48,8 +27,6 @@
         "title": "Herconfigureren",
         "description": "Pas je locatiegegevens aan",
         "data": {
-          "latitude": "Breedtegraad",
-          "longitude": "Lengtegraad",
           "city": "Plaats of postcode"
         }
       }
@@ -67,8 +44,7 @@
     },
     "get_content_by": {
       "options": {
-        "city": "Plaats",
-        "lat_lng": "Breedte- en lengtegraad"
+        "city": "Plaats"
       }
     }
   },

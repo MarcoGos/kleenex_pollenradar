@@ -32,10 +32,8 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         session=session,
         region=config_entry.data[CONF_REGION],
         get_content_by=GetContentBy(
-            config_entry.data.get(CONF_GET_CONTENT_BY, GetContentBy.LAT_LNG.value)
+            config_entry.data.get(CONF_GET_CONTENT_BY, GetContentBy.CITY.value)
         ),
-        latitude=config_entry.data[CONF_LATITUDE],
-        longitude=config_entry.data[CONF_LONGITUDE],
         city=config_entry.data.get(CONF_CITY, ""),
     )
 

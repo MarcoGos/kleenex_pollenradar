@@ -62,12 +62,10 @@ class GetContentBy(Enum):
     """Get content by."""
 
     CITY = "city"
-    LAT_LNG = "lat_lng"
     CITY_ITALY = "city_italy"
 
 
 METHODS = {
     GetContentBy.CITY: "GetPollenContentCity",
-    GetContentBy.LAT_LNG: "GetPollenContent",
     GetContentBy.CITY_ITALY: "GetPollenData",
 }

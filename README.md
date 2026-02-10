@@ -17,7 +17,7 @@ Via HACS:
 
 ## Setup
 
-During the setup of the integration a region, name, city or latitude and longitude needs to be provided.
+During the setup of the integration a region, name and city needs to be provided.
 
 ## What to expect
 

@@ -41,15 +41,11 @@ class PollenApi:
         session: aiohttp.ClientSession,
         region: str,
         get_content_by: GetContentBy,
-        latitude: float = 0,
-        longitude: float = 0,
         city: str = "",
     ) -> None:
         self._session = session
         self.region = region
         self.get_content_by = get_content_by
-        self.latitude = latitude
-        self.longitude = longitude
         self.city = city
 
     async def async_get_data(self) -> dict[str, Any]:
@@ -67,7 +63,7 @@ class PollenApi:
 
     async def refresh_data(self):
         """Refresh data from the API."""
-        if (self.latitude != 0 and self.longitude != 0) or self.city:
+        if self.city:
             success = await self.__request_data()
             if success:
                 if self.get_content_by == GetContentBy.CITY_ITALY:
@@ -76,15 +72,12 @@ class PollenApi:
                     self.__decode_raw_data()
 
     async def __request_data(self) -> bool:
-        """Request data from the API using latitude and longitude."""
-        if self.get_content_by == GetContentBy.LAT_LNG:
-            params = {"lat": self.latitude, "lng": self.longitude}
-        else:
-            params = {
-                "city"
-                if self.get_content_by == GetContentBy.CITY
-                else "location": self.city
-            }
+        """Request data from the API using city."""
+        params = {
+            "city"
+            if self.get_content_by == GetContentBy.CITY
+            else "location": self.city
+        }
         url = self.__get_url_by_region()
         _LOGGER.debug("Requesting data from URL: %s with params: %s", url, params)
         data = await self.__perform_request(url, params)
@@ -135,6 +128,17 @@ class PollenApi:
 
     def __decode_raw_data(self):
         """Decode the raw data from the API."""
+        # <button class="day-link active" data-grass="low" data-trees="moderate" data-weeds="low"
+        # data-grass-count="0 PPM"
+        # data-weeds-count="0 PPM"
+        # data-trees-count="133 PPM"
+        # data-grass-detail="Poaceae,0,low"
+        # data-tree-detail="Hazelaar,9,low|Iep,2,low|Pijnboom,0,low|Els,29,low|Populier,10,low|Eik,0,low|Plataan,0,low|Berk,0,low|Cipres,83,high"
+        # data-weed-detail="Bijvoet,0,low|Ganzevoet,0,low|Ambrosia,0,low|Brandnetel,0,low">
+        #     <span class="day-name">Vandaag</span>
+        #     <span class="day-number">10</span>
+        # </button>
+
         soup = BeautifulSoup(self._raw_data, "html.parser")
 
         self.__extract_location_data(soup)
@@ -300,11 +304,6 @@ class PollenApi:
                 month = 1
             dt = datetime(year=year, month=month, day=day_no)
         return dt.date()
-
-    @property
-    def position(self) -> str:
-        """Get the position of the pollen data."""
-        return f"{self.latitude}x{self.longitude}"
 
     def determine_level_by_count(self, pollen_type: str, pollen_count: int) -> str:
         """Determine the pollen level based on the count."""

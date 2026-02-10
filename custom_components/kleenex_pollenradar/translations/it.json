@@ -15,28 +15,7 @@
         "description": "Seleziona la tua regione e fornisci un nome per questa istanza",
         "data": {
           "region": "Regione",
-          "name": "Nome"
-        }
-      },
-      "content_by": {
-        "title": "Ottieni informazioni tramite",
-        "description": "Seleziona come desideri fornire le informazioni sulla tua posizione",
-        "data": {
-          "get_content_by": "Ottieni informazioni tramite"
-        }
-      },
-      "lat_lng": {
-        "title": "Latitudine e Longitudine",
-        "description": "Fornisci le coordinate di latitudine e longitudine",
-        "data": {
-          "latitude": "Latitudine",
-          "longitude": "Longitudine"
-        }
-      },
-      "city": {
-        "title": "Città o CAP",
-        "description": "Fornisci un nome di città o un codice postale",
-        "data": {
+          "name": "Nome",
           "city": "Città o CAP"
         }
       },
@@ -48,8 +27,6 @@
         "title": "Riconfigurare",
         "description": "Modifica le informazioni sulla tua posizione",
         "data": {
-          "latitude": "Latitudine",
-          "longitude": "Longitudine",
           "city": "Città o CAP"
         }
       }
@@ -67,8 +44,7 @@
     },
     "get_content_by": {
       "options": {
-        "city": "Città",
-        "lat_lng": "Latitudine e Longitudine"
+        "city": "Città"
       }
     }
   },

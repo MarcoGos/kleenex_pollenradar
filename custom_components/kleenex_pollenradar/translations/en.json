@@ -15,28 +15,7 @@
         "description": "Select your region and provide a name for this instance",
         "data": {
           "region": "Region",
-          "name": "Name"
-        }
-      },
-      "content_by": {
-        "title": "Get information by",
-        "description": "Select how you want to provide your location information",
-        "data": {
-          "get_content_by": "Get information by"
-        }
-      },
-      "lat_lng": {
-        "title": "Latitude and Longitude",
-        "description": "Provide latitude and longitude coordinates",
-        "data": {
-          "latitude": "Latitude",
-          "longitude": "Longitude"
-        }
-      },
-      "city": {
-        "title": "City or Postcode",
-        "description": "Provide a city name or postcode",
-        "data": {
+          "name": "Name",
           "city": "City or Postcode"
         }
       },
@@ -48,8 +27,6 @@
         "title": "Reconfigure",
         "description": "Modify your location information",
         "data": {
-          "latitude": "Latitude",
-          "longitude": "Longitude",
           "city": "City or Postcode"
         }
       }
@@ -67,8 +44,7 @@
     },
     "get_content_by": {
       "options": {
-        "city": "City or Postcode",
-        "lat_lng": "Latitude and Longitude"
+        "city": "City or Postcode"
       }
     }
   },
