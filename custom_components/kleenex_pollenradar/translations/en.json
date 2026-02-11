@@ -18,17 +18,6 @@
           "name": "Name",
           "city": "City or Postcode"
         }
-      },
-      "final": {
-        "title": "Validating",
-        "description": "Please wait while we validate your information"
-      },
-      "reconfigure": {
-        "title": "Reconfigure",
-        "description": "Modify your location information",
-        "data": {
-          "city": "City or Postcode"
-        }
       }
     }
   },
@@ -40,11 +29,6 @@
         "nl": "The Netherlands",
         "uk": "Great Britain",
         "us": "United States of America"
-      }
-    },
-    "get_content_by": {
-      "options": {
-        "city": "City or Postcode"
       }
     }
   },

@@ -18,17 +18,6 @@
           "name": "Nome",
           "city": "Città o CAP"
         }
-      },
-      "final": {
-        "title": "Convalida",
-        "description": "Per favore aspetta mentre convalidiamo le tue informazioni"
-      },
-      "reconfigure": {
-        "title": "Riconfigurare",
-        "description": "Modifica le informazioni sulla tua posizione",
-        "data": {
-          "city": "Città o CAP"
-        }
       }
     }
   },
@@ -40,11 +29,6 @@
         "nl": "Paesi Bassi",
         "uk": "Gran Bretagna",
         "us": "Stati Uniti"
-      }
-    },
-    "get_content_by": {
-      "options": {
-        "city": "Città"
       }
     }
   },

@@ -18,17 +18,6 @@
           "name": "Naam",
           "city": "Plaats of postcode"
         }
-      },
-      "final": {
-        "title": "Valideren",
-        "description": "Even geduld terwijl we je gegevens valideren"
-      },
-      "reconfigure": {
-        "title": "Herconfigureren",
-        "description": "Pas je locatiegegevens aan",
-        "data": {
-          "city": "Plaats of postcode"
-        }
       }
     }
   },
@@ -40,11 +29,6 @@
         "nl": "Nederland",
         "uk": "Groot-Brittannië",
         "us": "Verenigde Staten van Amerika"
-      }
-    },
-    "get_content_by": {
-      "options": {
-        "city": "Plaats"
       }
     }
   },

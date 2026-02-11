@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.const import CONF_LATITUDE, CONF_LONGITUDE
 
 from .api import PollenApi
 from .const import (
@@ -18,8 +16,6 @@ from .const import (
     GetContentBy,
 )
 from .coordinator import PollenDataUpdateCoordinator
-
-_LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:

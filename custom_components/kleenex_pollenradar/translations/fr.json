@@ -18,17 +18,6 @@
           "name": "Nom",
           "city": "Ville ou Code Postal"
         }
-      },
-      "final": {
-        "title": "Validation",
-        "description": "Veuillez patienter pendant que nous validons vos informations"
-      },
-      "reconfigure": {
-        "title": "Reconfigurer",
-        "description": "Modifier les informations de votre emplacement",
-        "data": {
-          "city": "Ville ou Code Postal"
-        }
       }
     }
   },
@@ -40,11 +29,6 @@
         "nl": "Pays-Bas",
         "uk": "Grande-Bretagne",
         "us": "États-Unis"
-      }
-    },
-    "get_content_by": {
-      "options": {
-        "city": "Ville"
       }
     }
   },
