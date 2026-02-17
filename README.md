@@ -52,7 +52,7 @@ If the Kleenex integration raises errors then first have a look at the Kleenex/S
 - For France: https://www.kleenex.fr/alertes-pollens
 - For Italy: https://www.it.scottex.com/allerta-pollini/previsioni-dei-pollini
 - For Netherlands: https://www.kleenex.nl/pollenradar
-- For UK and Ireland: https://www.kleenex.co.uk/pollen-count
+- For UK and RoI: https://www.kleenex.co.uk/pollen-count
 - For USA: https://www.kleenex.com/en-us/pollen-count [^1]
 
 ## Disclaimer
