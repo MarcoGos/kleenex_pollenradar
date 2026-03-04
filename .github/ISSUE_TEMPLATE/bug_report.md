@@ -12,7 +12,7 @@ A clear and concise description of what the bug is.
 
 *Information**
 Please provide the following information:
-1. GPS location (2 decimals is sufficient)
+1. City or postal code
 2. Selected region
 3. Installed version
 4. Home Assistant version
