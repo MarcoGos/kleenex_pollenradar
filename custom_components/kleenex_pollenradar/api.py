@@ -263,7 +263,7 @@ class PollenApi:
         """Decode the raw data from the NA (US) API."""
         # <div class="pollen-tracker one-slide-carousel">
         #   <div>
-        #     <p class="date-heading">Los Gatos | Tuesday April 14 </p>
+        #     <p class="date-heading">City | Tuesday April 14 </p>
         #     <div class="data-container">
         #       <ul class="diagram-list">
         #         <li class="... tree-learn-more ...">
