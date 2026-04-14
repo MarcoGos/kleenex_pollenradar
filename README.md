@@ -63,6 +63,7 @@ Use this integratiion at your own risk. Kleemex/Scottex may update or modify its
 
 ## Contributions
  * [hocuspocus69](https://github.com/hocuspocus69) &#8594; Added the Italian version.
+ * [castellotti](https://github.com/castellotti) &#8594; Added support for the US API.
 
 [commits-shield]: https://img.shields.io/github/commit-activity/y/MarcoGos/kleenex_pollenradar.svg?style=for-the-badge
 [commits]: https://github.com/MarcoGos/kleenex_pollenradar/commits/main
