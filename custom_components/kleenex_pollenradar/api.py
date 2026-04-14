@@ -292,8 +292,7 @@ class PollenApi:
             return
 
         day_divs = [el for el in pollen_tracker.children if isinstance(el, Tag)]
-        if day_divs:
-            self._pollen = []
+        self._pollen = []
 
         na_pollen_types = {
             "trees": ("TreesRiskData", "tree-ppm"),
@@ -318,11 +317,10 @@ class PollenApi:
 
             for pollen_type, (risk_id, ppm_class) in na_pollen_types.items():
                 risk_input = day_div.find("input", attrs={"data-id": risk_id})
-                pollen_level = (
-                    risk_input.get("value", "")  # type: ignore[union-attr]
-                    if risk_input and isinstance(risk_input, Tag)
-                    else ""
-                ) or self.determine_level_by_count(pollen_type, 0)
+                if risk_input and isinstance(risk_input, Tag):
+                    pollen_level = risk_input.get("value", "") or self.determine_level_by_count(pollen_type, 0)
+                else:
+                    pollen_level = self.determine_level_by_count(pollen_type, 0)
 
                 ppm_el = day_div.find("p", class_=ppm_class)
                 count_unit = ppm_el.text.strip() if ppm_el and isinstance(ppm_el, Tag) else "0 PPM"

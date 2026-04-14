@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import logging
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -17,6 +19,8 @@ from .const import (
     Regions,
 )
 from .coordinator import PollenDataUpdateCoordinator
+
+_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
@@ -58,9 +62,16 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
 async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Migrate old config entries to the current version."""
     if config_entry.version == 1:
+        _LOGGER.debug("Migrating %s config entry from version 1 to 2", DOMAIN)
         new_data = {**config_entry.data}
         if new_data.get(CONF_REGION) == Regions.UNITED_STATES.value:
             new_data[CONF_GET_CONTENT_BY] = GetContentBy.CITY_NA.value
+            if not new_data.get(CONF_CITY):
+                _LOGGER.warning(
+                    "Kleenex Pollen Radar: US config entry '%s' is missing a city — "
+                    "please delete and re-add the integration",
+                    config_entry.title,
+                )
         hass.config_entries.async_update_entry(config_entry, data=new_data, version=2)
 
     return True
