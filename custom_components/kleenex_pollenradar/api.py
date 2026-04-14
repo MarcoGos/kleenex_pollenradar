@@ -32,6 +32,11 @@ class PollenApi:
         "weeds": "weed",
         "grass": "grass",
     }
+    _pollen_na_types: dict[str, tuple[str, str]] = {
+        "trees": ("TreesRiskData", "tree-ppm"),
+        "weeds": ("WeedsRiskData", "weed-ppm"),
+        "grass": ("GrassRiskData", "grass-ppm"),
+    }
     _found_city: str = ""
     _found_latitude: float = 0.0
     _found_longitude: float = 0.0
@@ -294,12 +299,6 @@ class PollenApi:
         day_divs = [el for el in pollen_tracker.children if isinstance(el, Tag)]
         self._pollen = []
 
-        na_pollen_types = {
-            "trees": ("TreesRiskData", "tree-ppm"),
-            "weeds": ("WeedsRiskData", "weed-ppm"),
-            "grass": ("GrassRiskData", "grass-ppm"),
-        }
-
         for day_div in day_divs:
             date_heading = day_div.find("p", class_="date-heading")
             if not date_heading or not isinstance(date_heading, Tag):
@@ -315,7 +314,7 @@ class PollenApi:
                 "date": pollen_date,
             }
 
-            for pollen_type, (risk_id, ppm_class) in na_pollen_types.items():
+            for pollen_type, (risk_id, ppm_class) in self._pollen_na_types.items():
                 risk_input = day_div.find("input", attrs={"data-id": risk_id})
                 if risk_input and isinstance(risk_input, Tag):
                     pollen_level = risk_input.get("value", "") or self.determine_level_by_count(pollen_type, 0)
@@ -323,7 +322,7 @@ class PollenApi:
                     pollen_level = self.determine_level_by_count(pollen_type, 0)
 
                 ppm_el = day_div.find("p", class_=ppm_class)
-                count_unit = ppm_el.text.strip() if ppm_el and isinstance(ppm_el, Tag) else "0 PPM"
+                count_unit = ppm_el.text.strip() if ppm_el else "0 PPM"
                 try:
                     pollen_count, unit_of_measure = count_unit.split(" ")
                     pollen[pollen_type] = int(pollen_count)
