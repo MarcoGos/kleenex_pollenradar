@@ -53,7 +53,7 @@ If the Kleenex integration raises errors then first have a look at the Kleenex/S
 - For Italy: https://www.it.scottex.com/allerta-pollini/previsioni-dei-pollini
 - For Netherlands: https://www.kleenex.nl/pollenradar
 - For UK and RoI: https://www.kleenex.co.uk/pollen-count
-- For USA: https://www.kleenex.com/en-us/pollen-count [^1]
+- For USA: https://www.kleenex.com/en-us/pollen-count
 
 ## Disclaimer
 
@@ -75,4 +75,3 @@ Use this integratiion at your own risk. Kleemex/Scottex may update or modify its
 [vdbrink]: https://vdbrink.github.io/homeassistant/homeassistant_hacs_kleenex
 [krissen]: https://github.com/krissen/pollenprognos-card
 
-[^1]: The USA version of the Kleenex pollen radar uses a different version of the API, which is incompatible with the integration. This integration uses an older version of the Kleenex/Scottex API. As a result, the pollen values shown in Home Assistant may differ from those displayed on the official website.

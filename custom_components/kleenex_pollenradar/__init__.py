@@ -14,6 +14,7 @@ from .const import (
     CONF_GET_CONTENT_BY,
     CONF_CITY,
     GetContentBy,
+    Regions,
 )
 from .coordinator import PollenDataUpdateCoordinator
 
@@ -52,6 +53,17 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
     ):
         hass.data[DOMAIN].pop(config_entry.entry_id)
     return unload_ok
+
+
+async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
+    """Migrate old config entries to the current version."""
+    if config_entry.version == 1:
+        new_data = {**config_entry.data}
+        if new_data.get(CONF_REGION) == Regions.UNITED_STATES.value:
+            new_data[CONF_GET_CONTENT_BY] = GetContentBy.CITY_NA.value
+        hass.config_entries.async_update_entry(config_entry, data=new_data, version=2)
+
+    return True
 
 
 async def async_reload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> None:
