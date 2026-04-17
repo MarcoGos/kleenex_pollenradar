@@ -32,6 +32,11 @@ class PollenApi:
         "weeds": "weed",
         "grass": "grass",
     }
+    _pollen_na_types: dict[str, tuple[str, str]] = {
+        "trees": ("TreesRiskData", "tree-ppm"),
+        "weeds": ("WeedsRiskData", "weed-ppm"),
+        "grass": ("GrassRiskData", "grass-ppm"),
+    }
     _found_city: str = ""
     _found_latitude: float = 0.0
     _found_longitude: float = 0.0
@@ -68,16 +73,15 @@ class PollenApi:
             if success:
                 if self.get_content_by == GetContentBy.CITY_ITALY:
                     self.__decode_raw_data_italy()
+                elif self.get_content_by == GetContentBy.CITY_NA:
+                    self.__decode_raw_data_na()
                 else:
                     self.__decode_raw_data()
 
     async def __request_data(self) -> bool:
         """Request data from the API using city."""
-        params = {
-            "city"
-            if self.get_content_by == GetContentBy.CITY
-            else "location": self.city
-        }
+        param_key = "location" if self.get_content_by == GetContentBy.CITY_ITALY else "city"
+        params = {param_key: self.city}
         url = self.__get_url_by_region()
         _LOGGER.debug("Requesting data from URL: %s with params: %s", url, params)
         data = await self.__perform_request(url, params)
@@ -257,6 +261,78 @@ class PollenApi:
                                     "level": value[0],
                                 }
                                 pollen[f"{pollen_type}_details"].append(pollen_detail)
+
+            self._pollen.append(pollen)
+
+    def __decode_raw_data_na(self):
+        """Decode the raw data from the NA (US) API."""
+        # <div class="pollen-tracker one-slide-carousel">
+        #   <div>
+        #     <p class="date-heading">City | Tuesday April 14 </p>
+        #     <div class="data-container">
+        #       <ul class="diagram-list">
+        #         <li class="... tree-learn-more ...">
+        #           <input data-id="TreesRiskData" type="hidden" value="high" />
+        #           <p class="ppm-level tree-ppm">357 PPM</p>
+        #         </li>
+        #         <li class="... grass-learn-more ...">
+        #           <input data-id="GrassRiskData" type="hidden" value="low" />
+        #           <p class="ppm-level grass-ppm">0 PPM</p>
+        #         </li>
+        #         <li class="... weed-learn-more ...">
+        #           <input data-id="WeedsRiskData" type="hidden" value="low" />
+        #           <p class="ppm-level weed-ppm">0 PPM</p>
+        #         </li>
+        #       </ul>
+        #     </div>
+        #   </div>
+        # </div>
+
+        soup = BeautifulSoup(self._raw_data, "html.parser")
+
+        self.__extract_location_data(soup)
+
+        pollen_tracker = soup.find("div", class_="pollen-tracker")
+        if not pollen_tracker or not isinstance(pollen_tracker, Tag):
+            return
+
+        day_divs = [el for el in pollen_tracker.children if isinstance(el, Tag)]
+        self._pollen = []
+
+        for day_div in day_divs:
+            date_heading = day_div.find("p", class_="date-heading")
+            if not date_heading or not isinstance(date_heading, Tag):
+                continue
+            try:
+                day_no = int(date_heading.text.strip().split()[-1])
+            except (ValueError, IndexError):
+                continue
+
+            pollen_date = self.__determine_pollen_date(day_no)
+            pollen: dict[str, Any] = {
+                "day": day_no,
+                "date": pollen_date,
+            }
+
+            for pollen_type, (risk_id, ppm_class) in self._pollen_na_types.items():
+                risk_input = day_div.find("input", attrs={"data-id": risk_id})
+                if risk_input and isinstance(risk_input, Tag):
+                    pollen_level = risk_input.get("value", "") or self.determine_level_by_count(pollen_type, 0)
+                else:
+                    pollen_level = self.determine_level_by_count(pollen_type, 0)
+
+                ppm_el = day_div.find("p", class_=ppm_class)
+                count_unit = ppm_el.text.strip() if ppm_el else "0 PPM"
+                try:
+                    pollen_count, unit_of_measure = count_unit.split(" ")
+                    pollen[pollen_type] = int(pollen_count)
+                except (ValueError, AttributeError):
+                    pollen[pollen_type] = 0
+                    unit_of_measure = "ppm"
+
+                pollen[f"{pollen_type}_level"] = pollen_level
+                pollen[f"{pollen_type}_unit_of_measure"] = unit_of_measure.lower()
+                pollen[f"{pollen_type}_details"] = []
 
             self._pollen.append(pollen)
 

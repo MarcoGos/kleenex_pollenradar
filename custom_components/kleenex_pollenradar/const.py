@@ -63,9 +63,11 @@ class GetContentBy(Enum):
 
     CITY = "city"
     CITY_ITALY = "city_italy"
+    CITY_NA = "city_na"
 
 
 METHODS = {
     GetContentBy.CITY: "GetPollenContentCity",
     GetContentBy.CITY_ITALY: "GetPollenData",
+    GetContentBy.CITY_NA: "GetPollenContentNACity",
 }

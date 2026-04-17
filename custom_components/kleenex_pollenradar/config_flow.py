@@ -31,7 +31,7 @@ _LOGGER = logging.getLogger(__name__)
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Kleenex pollen."""
 
-    VERSION = 1
+    VERSION = 2
     region: str = ""
     name: str = ""
     get_content_by: GetContentBy = GetContentBy.CITY
@@ -49,6 +49,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self.city = user_input[CONF_CITY]
             if self.region == Regions.ITALY.value:
                 self.get_content_by = GetContentBy.CITY_ITALY
+            elif self.region == Regions.UNITED_STATES.value:
+                self.get_content_by = GetContentBy.CITY_NA
             else:
                 self.get_content_by = GetContentBy.CITY
             user_input[CONF_GET_CONTENT_BY] = self.get_content_by.value
