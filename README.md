@@ -82,7 +82,7 @@ If the Kleenex integration raises errors then first have a look at the Kleenex/S
 
 This Homeassistant integration uses an unofficial API client for the Kleenex/Scottex API and is not affiliated with, endorsed by, or associated with Kleenex/Scottex or any of its subsidiaries.
 
-Use this integratiion at your own risk. Kleemex/Scottex may update or modify its API without notice, which could render this integration inoperative or non-compliant. The maintainer of this project is not responsible for any misuse, legal implications, or damages arising from its use.
+Use this integration at your own risk. Kleenex/Scottex may update or modify its API without notice, which could render this integration inoperative or non-compliant. The maintainer of this project is not responsible for any misuse, legal implications, or damages arising from its use.
 
 ## Contributions
  * [hocuspocus69](https://github.com/hocuspocus69) &#8594; Added the Italian version.
