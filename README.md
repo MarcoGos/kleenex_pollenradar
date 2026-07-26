@@ -11,13 +11,36 @@ This is a custom integration of the Kleenex pollen radar/Scottex. It will provid
 
 ## Installation
 
-Via HACS:
+This integration is in the default HACS store. Click the button below, or search HACS for "Kleenex".
 
-- Search for Kleenex Pollen Radar
+[![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=MarcoGos&repository=kleenex_pollenradar&category=integration)
+
+Restart Home Assistant after installing.
+
+<details>
+<summary>Manual installation</summary>
+
+1. Copy the `custom_components/kleenex_pollenradar` directory from this repository into your Home Assistant `config/custom_components/` folder.
+2. Restart Home Assistant.
+
+</details>
 
 ## Setup
 
-During the setup of the integration a region, city (or postal code) and name needs to be provided.
+After the restart, add the integration:
+
+[![Add integration](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=kleenex_pollenradar)
+
+Or go to **Settings > Devices & services**, click **+ Add integration** and search for "Kleenex".
+
+In the **Region and name** dialog:
+
+1. Select your **Region**.
+2. Enter your **City or Postcode**.
+3. Optionally change the **Name**, which defaults to your Home Assistant location name.
+4. Click **Submit**.
+
+![Installing and setting up the integration](images/install.gif)
 
 ## What to expect
 
