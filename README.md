@@ -40,8 +40,6 @@ In the **Region and name** dialog:
 3. Optionally change the **Name**, which defaults to your Home Assistant location name.
 4. Click **Submit**.
 
-![Installing and setting up the integration](images/install.gif)
-
 ## What to expect
 
 The following sensors will be registered:
