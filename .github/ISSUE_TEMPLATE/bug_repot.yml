@@ -8,7 +8,7 @@ body:
       value: |
         Thanks for reporting a bug! Please fill out the fields below so we can diagnose the issue quickly.
 
-        **Before submitting**, please check the [Troubleshooting Guide](https://github.com/krissen/pollenprognos-card/blob/HEAD/docs/troubleshooting.md):
+        **Before submitting**, please check the [Troubleshooting Guide](https://github.com/MarcoGos/kleenex_pollenradar/blob/main/docs/troubleshooting.md):
         - [ ] I verified my **running** integration version
         - [ ] I restarted the integration
         - [ ] I restarted Home Assistant
