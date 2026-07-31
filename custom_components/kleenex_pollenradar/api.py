@@ -183,13 +183,13 @@ class PollenApi:
                         if len(sub_items) == 3:
                             try:
                                 pollen_detail = {
-                                    "name": sub_items[0],
+                                    "name": sub_items[0].strip(),
                                     "value": int(sub_items[1]),
                                     "level": sub_items[2],
                                 }
                             except ValueError:
                                 pollen_detail = {
-                                    "name": sub_items[0],
+                                    "name": sub_items[0].strip(),
                                     "value": 0,
                                     "level": sub_items[2],
                                 }
