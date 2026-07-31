@@ -80,7 +80,9 @@ class PollenApi:
 
     async def __request_data(self) -> bool:
         """Request data from the API using city."""
-        param_key = "location" if self.get_content_by == GetContentBy.CITY_ITALY else "city"
+        param_key = (
+            "location" if self.get_content_by == GetContentBy.CITY_ITALY else "city"
+        )
         params = {param_key: self.city}
         url = self.__get_url_by_region()
         _LOGGER.debug("Requesting data from URL: %s with params: %s", url, params)
@@ -248,7 +250,10 @@ class PollenApi:
                                 name = (
                                     detail_info.find("span", class_="name-text")
                                     .contents[0]
-                                    .text
+                                    .text.strip()  # remove leading/trailing whitespace
+                                    .replace(
+                                        "Chenepod", "Chenopod"
+                                    )  # Correct translation typo
                                 )
                                 value = (
                                     detail_info.find("span", class_="quality-text")
@@ -317,7 +322,9 @@ class PollenApi:
             for pollen_type, (risk_id, ppm_class) in self._pollen_na_types.items():
                 risk_input = day_div.find("input", attrs={"data-id": risk_id})
                 if risk_input and isinstance(risk_input, Tag):
-                    pollen_level = risk_input.get("value", "") or self.determine_level_by_count(pollen_type, 0)
+                    pollen_level = risk_input.get(
+                        "value", ""
+                    ) or self.determine_level_by_count(pollen_type, 0)
                 else:
                     pollen_level = self.determine_level_by_count(pollen_type, 0)
 
