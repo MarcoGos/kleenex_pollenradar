@@ -1,0 +1,70 @@
+name: Bug Report
+description: Report a bug with Kleenex Pollen Radar
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out the fields below so we can diagnose the issue quickly.
+
+        **Before submitting**, please check the [Troubleshooting Guide](https://github.com/krissen/pollenprognos-card/blob/HEAD/docs/troubleshooting.md):
+        - [ ] I verified my **running** integration version
+        - [ ] I restarted the integration
+        - [ ] I restarted Home Assistant
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? What did you expect to happen?
+      placeholder: |
+        When I look at the sensors the values are off.
+    validations:
+      required: true
+
+  - type: textarea
+    id: raw-data
+    attributes:
+      label: Raw data
+      description: |
+        Provide the raw data by copying the content of the 'Raw' attribute of the Date sensor.
+
+  - type: input
+    id: integration-version
+    attributes:
+      label: Kleenex Pollen Radar integration version
+      description: |
+        This is the version of the Kleenex Pollen Radar integration.
+        Find it in Settings > Devices & Services > click your Kleenex Pollen Radar integration > three-dot menu > About.
+      placeholder: "v1.6.2"
+    validations:
+      required: true
+
+  - type: input
+    id: ha-version
+    attributes:
+      label: Home Assistant version
+      description: Found in Settings > About, or click the version number at the bottom of the sidebar
+      placeholder: "2026.8.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: ha-logs
+    attributes:
+      label: Home Assistant log errors
+      description: |
+        Check Settings > System > Logs for errors from your Kleenex Pollen Radar integration.
+        Search for Kleenex and copy any relevant entries.
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Anything else that might help (screenshots, steps to reproduce, things you already tried).
+    validations:
+      required: false
