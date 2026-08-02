@@ -249,7 +249,9 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
         """Return the state attributes of the sensor."""
         key = self.entity_description.key
         if key == "date":
-            return {"raw": self.coordinator.data.get("raw")}
+            raw = self.coordinator.data.get("raw")
+            if raw:
+                return {"raw": raw[:8192]}  # Limit to 8k characters
         if key not in {"trees", "grass", "weeds"}:
             return None
 
