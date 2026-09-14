@@ -74,7 +74,7 @@ If the Kleenex integration raises errors then first have a look at the Kleenex/S
 - For Italy: https://www.it.scottex.com/allerta-pollini/previsioni-dei-pollini
 - For Netherlands: https://www.kleenex.nl/pollenradar
 - For UK and RoI: https://www.kleenex.co.uk/pollen-count
-- For USA: https://www.kleenex.com/en-us/pollen-count
+- For USA: https://www.kleenex.com/en-us/pollen-count [^1]
 
 ## Disclaimer
 
@@ -86,6 +86,8 @@ Use this integration at your own risk. Kleenex/Scottex may update or modify its 
  * [hocuspocus69](https://github.com/hocuspocus69) &#8594; Added the Italian version.
  * [castellotti](https://github.com/castellotti) &#8594; Added support for the US API.
 
+[^1]: Some reported Canadian cities are also accepted.
+
 [commits-shield]: https://img.shields.io/github/commit-activity/y/MarcoGos/kleenex_pollenradar.svg?style=for-the-badge
 [commits]: https://github.com/MarcoGos/kleenex_pollenradar/commits/main
 [forum]: https://community.home-assistant.io/
@@ -96,4 +98,3 @@ Use this integration at your own risk. Kleenex/Scottex may update or modify its 
 [stats]: https://img.shields.io/badge/dynamic/json?color=41BDF5&logo=home-assistant&label=integration%20usage&suffix=%20installs&cacheSeconds=15600&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.kleenex_pollenradar.total&style=for-the-badge
 [vdbrink]: https://vdbrink.github.io/homeassistant/homeassistant_hacs_kleenex
 [krissen]: https://github.com/krissen/pollenprognos-card
-
