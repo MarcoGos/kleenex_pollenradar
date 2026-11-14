@@ -1,5 +1,7 @@
 {
     "name": "Kleenex Pollen Radar",
     "homeassistant": "2026.3.0",
-    "render_readme": true
+    "render_readme": true,
+    "zip_release": true,
+    "filename": "kleenex_pollenradar.zip"
   }
