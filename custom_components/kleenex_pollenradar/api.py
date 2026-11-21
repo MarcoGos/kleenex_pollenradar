@@ -104,11 +104,11 @@ class PollenApi:
             async with async_timeout.timeout(TIMEOUT):
                 if REGIONS[self.region]["method"] == "get":
                     response = await self._session.get(
-                        url=url, params=params, headers=self._headers, ssl=False
+                        url=url, params=params, headers=self._headers
                     )
                 else:
                     response = await self._session.post(
-                        url=url, data=params, headers=self._headers, ssl=False
+                        url=url, data=params, headers=self._headers
                     )
                 if response.status == 403:
                     _LOGGER.error("Access forbidden: 403 error from server")
