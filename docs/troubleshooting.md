@@ -7,3 +7,7 @@ If the Kleenex integration raises errors then first have a look at the Kleenex/S
 - For Netherlands: https://www.kleenex.nl/pollenradar
 - For UK and RoI: https://www.kleenex.co.uk/pollen-count
 - For USA: https://www.kleenex.com/en-us/pollen-count
+
+The Date sensor's `raw` attribute contains the response as text. Italian JSON
+responses are serialized as JSON. The attribute is limited to 8192 characters,
+so longer responses may be truncated.

@@ -1,5 +1,6 @@
 """Sensor platform for the Pollenradar integration."""
 
+import json
 import logging
 
 from collections.abc import Mapping
@@ -251,6 +252,8 @@ class KleenexSensor(CoordinatorEntity[PollenDataUpdateCoordinator], SensorEntity
         if key == "date":
             raw = self.coordinator.data.get("raw")
             if raw:
+                if not isinstance(raw, str):
+                    raw = json.dumps(raw, ensure_ascii=False)
                 return {"raw": raw[:8192]}  # Limit to 8k characters
         if key not in {"trees", "grass", "weeds"}:
             return None
