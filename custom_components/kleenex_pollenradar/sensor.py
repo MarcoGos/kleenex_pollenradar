@@ -2,25 +2,26 @@
 
 import json
 import logging
-
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
+)
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
-from homeassistant.const import EntityCategory, CONF_LATITUDE, CONF_LONGITUDE
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.components.sensor import (
-    SensorEntity,
-    SensorDeviceClass,
-    SensorEntityDescription,
-)
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from .const import CONF_NAME, DOMAIN, MANUFACTURER, MODEL, NAME
 from .coordinator import PollenDataUpdateCoordinator
-from .const import DOMAIN, NAME, MODEL, MANUFACTURER, CONF_NAME
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -42,7 +43,7 @@ def get_sensor_descriptions() -> list[SensorEntityDescription]:
                 key=key,
                 translation_key=key,
                 icon=icon,
-                state_class="measurement",
+                state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement="ppm",
             )
             for key, icon in [
